@@ -1,8 +1,12 @@
 import { configureStore, combineReducers, Action } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
-import tmdbConfigReducer from "features/tmdb-config/tmdbConfigSlice";
+import tmdbConfigReducer from "features/movies/tmdbConfigSlice";
+import trendingMoviesReducer from "features/movies/trendingMoviesSlice";
 
-export const rootReducer = combineReducers({ tmdbConfig: tmdbConfigReducer });
+export const rootReducer = combineReducers({
+  tmdbConfig: tmdbConfigReducer,
+  trendingMovies: trendingMoviesReducer
+});
 export type RootState = ReturnType<typeof rootReducer>;
 
 const store = configureStore({

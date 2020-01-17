@@ -22,11 +22,13 @@ export const getConfig = (): Promise<Tmdb.Config> => {
   return getEndpoint("configuration");
 };
 
-export const getTrending = (
-  mediaType: Tmdb.MediaType,
-  timeWindow: Tmdb.TimeWindow = "week"
-) => {
-  return getEndpoint(`trending/${mediaType}/${timeWindow}`);
+export const getTrendingMovies = (
+  page: number = 1,
+  timeWindow: Tmdb.TimeWindow = "day"
+): Promise<Tmdb.PaginatedResults<Tmdb.MovieResult>> => {
+  return getEndpoint(`trending/movie/${timeWindow}`, [
+    { key: "page", value: page.toString() }
+  ]);
 };
 
 export const getMovie = (movieId: number): Promise<Tmdb.Movie> => {

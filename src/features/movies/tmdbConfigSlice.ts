@@ -4,11 +4,13 @@ import { getConfig } from "api/tmdb";
 
 interface TmdbConfigState {
   config: Tmdb.Config | null;
+  isFetching: boolean;
   error: string | null;
 }
 
 const initialState: TmdbConfigState = {
   config: null,
+  isFetching: false,
   error: null
 };
 
@@ -21,20 +23,29 @@ const tmdbConfigSlice = createSlice({
       state.error = null;
     },
     getConfigFailed(state, action: PayloadAction<string>) {
-      state.config = null;
       state.error = action.payload;
+    },
+    isFetching(state, action: PayloadAction<boolean>) {
+      state.isFetching = action.payload;
     }
   }
 });
 
-export const { getConfigSuccess, getConfigFailed } = tmdbConfigSlice.actions;
+export const {
+  getConfigSuccess,
+  getConfigFailed,
+  isFetching
+} = tmdbConfigSlice.actions;
 
 export const fetchConfig = (): AppThunk => async dispatch => {
   try {
+    dispatch(isFetching(true));
     const config = await getConfig();
     dispatch(getConfigSuccess(config));
   } catch (err) {
     dispatch(getConfigFailed(err.toString()));
+  } finally {
+    dispatch(isFetching(false));
   }
 };
 
