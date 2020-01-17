@@ -1,14 +1,19 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import { Provider } from "react-redux";
+import "whatwg-fetch";
 import { theme, GlobalStyles } from "styles";
-import "features/firebase";
+import store from "store";
+import Movies from "features/movies/Movies";
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <p>'sup?</p>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Movies />
+      </ThemeProvider>
+    </Provider>
   );
 };
 
