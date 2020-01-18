@@ -39,12 +39,12 @@ export const getImageUrls = (
 export const getTrendingMovies = (
   page: number = 1,
   timeWindow: Tmdb.TimeWindow = "day"
-): Promise<Tmdb.PaginatedResults<Tmdb.MovieResult>> => {
+): Promise<Tmdb.PaginatedResults<Tmdb.MovieResult> | Tmdb.Error> => {
   return getEndpoint(`trending/movie/${timeWindow}`, [
     { key: "page", value: page.toString() }
   ]);
 };
 
-export const getMovie = (movieId: number): Promise<Tmdb.Movie> => {
+export const getMovie = (movieId: number): Promise<Tmdb.Movie | Tmdb.Error> => {
   return getEndpoint(`movie/${movieId}`);
 };

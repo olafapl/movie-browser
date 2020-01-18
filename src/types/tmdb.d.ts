@@ -90,4 +90,9 @@ declare namespace Tmdb {
   };
 
   type ImageType = "poster";
+
+  interface Error {
+    status_message: string;
+    status_code: number;
+  }
 }

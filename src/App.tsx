@@ -3,9 +3,11 @@ import { ThemeProvider, CSSReset, DarkMode } from "@chakra-ui/core";
 import { Global } from "@emotion/core";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "whatwg-fetch";
 import store, { persistor } from "store";
-import Movies from "features/movies/Movies";
+import TrendingMovies from "features/movies/TrendingMovies";
+import Movie from "features/movies/Movie";
 import { globalStyles, theme } from "styles";
 
 const App: React.FC = () => {
@@ -16,7 +18,16 @@ const App: React.FC = () => {
           <PersistGate persistor={persistor}>
             <CSSReset />
             <Global styles={globalStyles} />
-            <Movies />
+            <Router>
+              <Switch>
+                <Route path="/movie/:id">
+                  <Movie />
+                </Route>
+                <Route path="/">
+                  <TrendingMovies />
+                </Route>
+              </Switch>
+            </Router>
           </PersistGate>
         </DarkMode>
       </ThemeProvider>

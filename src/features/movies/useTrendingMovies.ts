@@ -12,7 +12,7 @@ const useTrendingMovies = (): [
     state => state.trendingMovies
   );
   const dispatch = useDispatch();
-  if (!isFetching && !lastPage) {
+  if (!isFetching && !lastPage && !error) {
     dispatch(fetchTrendingMovies(1));
   }
   const fetchNextPage = () => {

@@ -56,7 +56,15 @@ export const fetchTrendingMovies = (
   try {
     dispatch(isFetching(true));
     const result = await getTrendingMovies(page);
-    dispatch(getTrendingMoviesSuccess(result));
+    if ("results" in result) {
+      dispatch(getTrendingMoviesSuccess(result));
+    } else {
+      dispatch(
+        getTrendingMoviesFailed(
+          `${result.status_code}: ${result.status_message}`
+        )
+      );
+    }
   } catch (err) {
     dispatch(getTrendingMoviesFailed(err.toString()));
   } finally {

@@ -4,22 +4,24 @@ import css from "@emotion/css/macro";
 import {
   Flex,
   Spinner,
-  AspectRatioBox,
   Text,
   Grid,
-  Box,
-  Stack
+  Stack,
+  PseudoBox,
+  Link
 } from "@chakra-ui/core";
+import { Link as RouterLink } from "react-router-dom";
 import useTmdbConfig from "features/movies/useTmdbConfig";
 import useTrendingMovies from "features/movies/useTrendingMovies";
 import TmdbImage from "components/TmdbImage";
 
-const Movies = () => {
+const TrendingMovies = () => {
   const [tmdbConfig, isFetchingTmdbConfig] = useTmdbConfig();
   const [
     trendingMovies,
     fetchNextPage,
-    isFetchingTrendingMovies
+    isFetchingTrendingMovies,
+    trendingMoviesError
   ] = useTrendingMovies();
   const isLoaded =
     !isFetchingTrendingMovies &&
@@ -39,22 +41,32 @@ const Movies = () => {
         gap="4"
       >
         {trendingMovies.map(movie => (
-          <Box
+          <Link
+            // @ts-ignore
+            as={RouterLink}
+            to={`/movie/${movie.id}`}
             key={movie.id}
-            pos="relative"
+            href="#"
             borderRadius="md"
             overflow="hidden"
           >
-            <TmdbImage
-              path={movie.poster_path!}
-              tmdbConfig={tmdbConfig!}
-              imageType="poster"
-              sizes="(max-width: 30em) 50vw, 300px"
-              css={css`
-                width: 100%;
-              `}
-            />
-          </Box>
+            <PseudoBox
+              pos="relative"
+              boxShadow="md"
+              transition="opacity 0.2s ease-in-out"
+              _hover={{ opacity: 0.8 }}
+            >
+              <TmdbImage
+                path={movie.poster_path!}
+                tmdbConfig={tmdbConfig!}
+                imageType="poster"
+                sizes="(max-width: 30em) 50vw, 300px"
+                css={css`
+                  width: 100%;
+                `}
+              />
+            </PseudoBox>
+          </Link>
         ))}
       </Grid>
     </Stack>
@@ -65,4 +77,4 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+export default TrendingMovies;
