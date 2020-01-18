@@ -88,4 +88,6 @@ declare namespace Tmdb {
     page: number;
     results: T[];
   };
+
+  type ImageType = "poster";
 }

@@ -22,6 +22,20 @@ export const getConfig = (): Promise<Tmdb.Config> => {
   return getEndpoint("configuration");
 };
 
+export const getImageUrls = (
+  path: string,
+  tmdbConfig: Tmdb.Config,
+  imageType: Tmdb.ImageType
+) => {
+  const imageSizes = tmdbConfig.images.poster_sizes;
+  const imageUrls: { [key: string]: string } = {};
+  imageSizes.forEach(
+    size =>
+      (imageUrls[size] = `${tmdbConfig.images.secure_base_url}${size}${path}`)
+  );
+  return imageUrls;
+};
+
 export const getTrendingMovies = (
   page: number = 1,
   timeWindow: Tmdb.TimeWindow = "day"

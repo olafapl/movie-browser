@@ -1,16 +1,18 @@
 import React from "react";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { Global } from "@emotion/core";
 import { Provider } from "react-redux";
 import "whatwg-fetch";
-import { theme, GlobalStyles } from "styles";
 import store from "store";
 import Movies from "features/movies/Movies";
+import { globalStyles } from "styles";
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
+      <ThemeProvider>
+        <CSSReset />
+        <Global styles={globalStyles} />
         <Movies />
       </ThemeProvider>
     </Provider>
