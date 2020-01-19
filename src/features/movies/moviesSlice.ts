@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "store";
 import { getMovies } from "api/tmdb";
 
-interface ResultsState {
+interface MoviesResults {
   movies: Tmdb.MovieResult[];
   lastPage: number | null;
   totalPages: number | null;
@@ -11,12 +11,12 @@ interface ResultsState {
 }
 
 interface MoviesState {
-  [key: string]: ResultsState;
+  [key: string]: MoviesResults;
 }
 
 const initialState: MoviesState = {};
 
-const initialResultsState: ResultsState = {
+const initialResultsState: MoviesResults = {
   movies: [],
   lastPage: null,
   totalPages: null,
@@ -66,14 +66,14 @@ const moviesSlice = createSlice({
       if (!(endpoint in state)) {
         state[endpoint] = initialResultsState;
       }
-      state[action.payload.endpoint].error = error;
+      state[endpoint].error = error;
     },
     isFetching(state, action: PayloadAction<IsFetchingPayload>) {
       const { endpoint, isFetching } = action.payload;
       if (!(endpoint in state)) {
         state[endpoint] = initialResultsState;
       }
-      state[action.payload.endpoint].isFetching = isFetching;
+      state[endpoint].isFetching = isFetching;
     }
   }
 });

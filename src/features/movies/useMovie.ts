@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
-import { getMovie } from "api/tmdb";
+import { useDispatch } from "react-redux";
+import { fetchMovie } from "features/movies/movieSlice";
+import useSelector from "hooks/useSelector";
 
-const useMovie = (movieId: number): [Tmdb.Movie | null, boolean, boolean] => {
-  const [movie, setMovie] = useState<Tmdb.Movie | null>(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState(false);
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        setIsFetching(true);
-        const result = await getMovie(movieId);
-        if ("id" in result) {
-          setMovie(result);
-        } else {
-          setError(true);
-        }
-      } catch (err) {
-        setError(true);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-    fetchMovie();
-  }, [movieId]);
-  return [movie, isFetching, error];
+const useMovie = (
+  movieId: number
+): [Tmdb.Movie | null, boolean, string | null] => {
+  const results = useSelector(state => state.movie[movieId]);
+  const dispatch = useDispatch();
+  if (results) {
+    const { movie, isFetching, error } = results;
+    return [movie, isFetching, error];
+  } else {
+    dispatch(fetchMovie(movieId));
+    return [null, false, null];
+  }
 };
 
 export default useMovie;
