@@ -1,3 +1,4 @@
+import React from "react";
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import css from "@emotion/css/macro";
@@ -17,14 +18,23 @@ import useTmdbConfig from "features/movies/useTmdbConfig";
 import useMovies from "features/movies/useMovies";
 import TmdbImage from "components/TmdbImage";
 
-const Movies = () => {
+interface MoviesProps {
+  title: string;
+  endpoint: string;
+}
+
+const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
   const [tmdbConfig, isFetchingTmdbConfig, tmdbConfigError] = useTmdbConfig();
-  const [movies, fetchNextPage, isFetchingMovies, moviesError] = useMovies(
-    "trending/movie/day"
-  );
+  const [
+    movies,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingMovies,
+    moviesError
+  ] = useMovies(endpoint);
   return movies.length && tmdbConfig ? (
     <Stack spacing="4" px={[2, 4]} py="4">
-      <Heading as="h1">Trending movies</Heading>
+      <Heading as="h1">{title}</Heading>
       <Grid
         gridTemplateColumns={[
           "1fr 1fr 1fr",
@@ -61,15 +71,17 @@ const Movies = () => {
           </Link>
         ))}
       </Grid>
-      <Flex justifyContent="center">
-        <Button
-          variant="ghost"
-          isLoading={!!isFetchingMovies}
-          onClick={() => fetchNextPage()}
-        >
-          Load more
-        </Button>
-      </Flex>
+      {hasNextPage && (
+        <Flex justifyContent="center">
+          <Button
+            variant="ghost"
+            isLoading={!!isFetchingMovies}
+            onClick={() => fetchNextPage()}
+          >
+            Load more
+          </Button>
+        </Flex>
+      )}
     </Stack>
   ) : (
     <Flex alignItems="center" justifyContent="center" flex="1">

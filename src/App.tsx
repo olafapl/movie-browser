@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider, CSSReset, DarkMode } from "@chakra-ui/core";
+import { ThemeProvider, CSSReset, DarkMode, Text, Flex } from "@chakra-ui/core";
 import { Global } from "@emotion/core";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -23,8 +23,19 @@ const App: React.FC = () => {
                 <Route path="/movie/:id">
                   <Movie />
                 </Route>
-                <Route path="/">
-                  <Movies />
+                <Route exact path="/movies/popular">
+                  <Movies title="Popular" endpoint="movie/popular" />
+                </Route>
+                <Route exact path="/movies/top-rated">
+                  <Movies title="Top rated" endpoint="movie/top_rated" />
+                </Route>
+                <Route exact path="/(movies/trending|movies|)/">
+                  <Movies title="Trending" endpoint="trending/movie/day" />
+                </Route>
+                <Route>
+                  <Flex alignItems="center" justifyContent="center" flex="1">
+                    <Text>Could not find the requested page.</Text>
+                  </Flex>
                 </Route>
               </Switch>
             </Router>

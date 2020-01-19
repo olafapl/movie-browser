@@ -4,7 +4,13 @@ import useSelector from "hooks/useSelector";
 
 const useMovies = (
   endpoint: string
-): [Tmdb.MovieResult[], () => void, boolean | null, string | null] => {
+): [
+  Tmdb.MovieResult[],
+  () => void,
+  boolean | null,
+  boolean | null,
+  string | null
+] => {
   const results = useSelector(state => state.movies[endpoint]);
   const dispatch = useDispatch();
   if (results) {
@@ -23,10 +29,11 @@ const useMovies = (
         dispatch(fetchMovies(endpoint, lastPage + 1));
       }
     };
-    return [movies, fetchNextPage, isFetching, error];
+    const hasNextPage = lastPage && totalPages && lastPage < totalPages;
+    return [movies, fetchNextPage, hasNextPage as boolean, isFetching, error];
   } else {
     dispatch(fetchMovies(endpoint, 1));
-    return [[], () => {}, null, null];
+    return [[], () => {}, null, null, null];
   }
 };
 
