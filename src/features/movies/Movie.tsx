@@ -8,7 +8,7 @@ const Movie = () => {
   const { id } = useParams();
   const [movie, isFetching, error] = useMovie(Number.parseInt(id!));
   return movie ? (
-    <Box px={[2, 4]} py="4">
+    <Box p="4">
       <Head title={movie.title} />
       <Text>{movie.title}</Text>
     </Box>

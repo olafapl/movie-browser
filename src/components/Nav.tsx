@@ -11,8 +11,7 @@ const routes = [
 const Nav = () => {
   return (
     <Flex
-      px={[2, 4]}
-      py="4"
+      p="4"
       borderBottom="1px"
       borderColor="gray.700"
       justifyContent="space-between"

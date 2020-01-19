@@ -33,11 +33,11 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
     moviesError
   ] = useMovies(endpoint);
   return movies.length && tmdbConfig ? (
-    <Stack spacing="4" px={[2, 4]} py="4">
+    <Stack spacing="4" p="4">
       <Heading as="h1">{title}</Heading>
       <Grid
         gridTemplateColumns={[
-          "1fr 1fr 1fr",
+          "repeat(auto-fit, minmax(100px, 1fr))",
           "repeat(auto-fit, minmax(200px, 1fr))"
         ]}
         gap={[2, 4]}
@@ -62,7 +62,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
                 path={movie.poster_path!}
                 tmdbConfig={tmdbConfig!}
                 imageType="poster"
-                sizes="(max-width: 30em) 33vw, 300px"
+                sizes="(max-width: 30em) 150px, 300px"
                 css={css`
                   width: 100%;
                 `}
