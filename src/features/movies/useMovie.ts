@@ -4,7 +4,7 @@ import useSelector from "hooks/useSelector";
 
 const useMovie = (
   movieId: number
-): [Tmdb.Movie | null, boolean, string | null] => {
+): [Tmdb.Movie | null, boolean | null, string | null] => {
   const results = useSelector(state => state.movie[movieId]);
   const dispatch = useDispatch();
   if (results) {
@@ -12,7 +12,7 @@ const useMovie = (
     return [movie, isFetching, error];
   } else {
     dispatch(fetchMovie(movieId));
-    return [null, false, null];
+    return [null, null, null];
   }
 };
 
