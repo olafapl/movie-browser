@@ -8,6 +8,7 @@ import "whatwg-fetch";
 import store, { persistor } from "store";
 import Movies from "features/movies/Movies";
 import Movie from "features/movies/Movie";
+import Nav from "components/Nav";
 import { globalStyles, theme } from "styles";
 
 const App: React.FC = () => {
@@ -19,6 +20,7 @@ const App: React.FC = () => {
             <CSSReset />
             <Global styles={globalStyles} />
             <Router>
+              <Nav />
               <Switch>
                 <Route path="/movie/:id">
                   <Movie />

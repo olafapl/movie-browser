@@ -49,16 +49,25 @@ const moviesSlice = createSlice({
       if (!(endpoint in state)) {
         state[endpoint] = initialResultsState;
       }
-      state[endpoint].totalPages = results.total_pages;
+      state[endpoint] = {
+        ...state[endpoint],
+        totalPages: results.total_pages
+      };
       if (results.page === 1) {
-        state[endpoint].movies = results.results;
-        state[endpoint].lastPage = 1;
+        state[endpoint] = {
+          ...state[endpoint],
+          lastPage: 1,
+          movies: results.results
+        };
       } else if (
         state[endpoint]?.lastPage &&
         results.page === state[endpoint]?.lastPage + 1
       ) {
         state[endpoint].movies.push(...results.results);
-        state[endpoint].lastPage = results.page;
+        state[endpoint] = {
+          ...state[endpoint],
+          lastPage: results.page
+        };
       }
     },
     getMoviesFailed(state, action: PayloadAction<FailedPayload>) {
@@ -66,14 +75,20 @@ const moviesSlice = createSlice({
       if (!(endpoint in state)) {
         state[endpoint] = initialResultsState;
       }
-      state[endpoint].error = error;
+      state[endpoint] = {
+        ...state[endpoint],
+        error
+      };
     },
     isFetching(state, action: PayloadAction<IsFetchingPayload>) {
       const { endpoint, isFetching } = action.payload;
       if (!(endpoint in state)) {
         state[endpoint] = initialResultsState;
       }
-      state[endpoint].isFetching = isFetching;
+      state[endpoint] = {
+        ...state[endpoint],
+        isFetching
+      };
     }
   }
 });
