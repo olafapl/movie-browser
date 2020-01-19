@@ -8,7 +8,7 @@ import thunk, { ThunkAction } from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import tmdbConfigReducer from "features/movies/tmdbConfigSlice";
-import trendingMoviesReducer from "features/movies/trendingMoviesSlice";
+import moviesReducer from "features/movies/moviesSlice";
 
 export const rootReducer = combineReducers({
   tmdbConfig: persistReducer(
@@ -18,7 +18,7 @@ export const rootReducer = combineReducers({
     },
     tmdbConfigReducer
   ),
-  trendingMovies: trendingMoviesReducer
+  movies: moviesReducer
 });
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -36,13 +36,16 @@ export const getImageUrls = (
   return imageUrls;
 };
 
-export const getTrendingMovies = (
-  page: number = 1,
-  timeWindow: Tmdb.TimeWindow = "day"
+/**
+ * Generic function to fetch a collection of movies.
+ * @param endpoint API endpoint.
+ * @param page Page number.
+ */
+export const getMovies = (
+  endpoint: string,
+  page: number
 ): Promise<Tmdb.PaginatedResults<Tmdb.MovieResult> | Tmdb.Error> => {
-  return getEndpoint(`trending/movie/${timeWindow}`, [
-    { key: "page", value: page.toString() }
-  ]);
+  return getEndpoint(endpoint, [{ key: "page", value: page.toString() }]);
 };
 
 export const getMovie = (movieId: number): Promise<Tmdb.Movie | Tmdb.Error> => {

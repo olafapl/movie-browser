@@ -6,7 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "whatwg-fetch";
 import store, { persistor } from "store";
-import TrendingMovies from "features/movies/TrendingMovies";
+import Movies from "features/movies/Movies";
 import Movie from "features/movies/Movie";
 import { globalStyles, theme } from "styles";
 
@@ -24,7 +24,7 @@ const App: React.FC = () => {
                   <Movie />
                 </Route>
                 <Route path="/">
-                  <TrendingMovies />
+                  <Movies />
                 </Route>
               </Switch>
             </Router>

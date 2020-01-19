@@ -4,7 +4,7 @@ import css from "@emotion/css/macro";
 import {
   Flex,
   Spinner,
-  Text,
+  Heading,
   Grid,
   Stack,
   PseudoBox,
@@ -12,27 +12,19 @@ import {
 } from "@chakra-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import useTmdbConfig from "features/movies/useTmdbConfig";
-import useTrendingMovies from "features/movies/useTrendingMovies";
+import useMovies from "features/movies/useMovies";
 import TmdbImage from "components/TmdbImage";
 
-const TrendingMovies = () => {
+const Movies = () => {
   const [tmdbConfig, isFetchingTmdbConfig] = useTmdbConfig();
-  const [
-    trendingMovies,
-    fetchNextPage,
-    isFetchingTrendingMovies,
-    trendingMoviesError
-  ] = useTrendingMovies();
+  const [movies, fetchNextPage, isFetchingMovies, moviesError] = useMovies(
+    "trending/movie/day"
+  );
   const isLoaded =
-    !isFetchingTrendingMovies &&
-    trendingMovies.length &&
-    !isFetchingTmdbConfig &&
-    tmdbConfig;
+    !isFetchingMovies && movies.length && !isFetchingTmdbConfig && tmdbConfig;
   return isLoaded ? (
     <Stack spacing="4" p="4">
-      <Text fontSize="2xl" as="h1" fontWeight="bold">
-        Trending movies
-      </Text>
+      <Heading as="h1">Trending movies</Heading>
       <Grid
         gridTemplateColumns={[
           "1fr 1fr",
@@ -40,13 +32,12 @@ const TrendingMovies = () => {
         ]}
         gap="4"
       >
-        {trendingMovies.map(movie => (
+        {movies.map(movie => (
           <Link
             // @ts-ignore
             as={RouterLink}
             to={`/movie/${movie.id}`}
             key={movie.id}
-            href="#"
             borderRadius="md"
             overflow="hidden"
           >
@@ -77,4 +68,4 @@ const TrendingMovies = () => {
   );
 };
 
-export default TrendingMovies;
+export default Movies;
