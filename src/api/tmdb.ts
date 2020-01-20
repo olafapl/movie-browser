@@ -27,7 +27,10 @@ export const getImageUrls = (
   tmdbConfig: Tmdb.Config,
   imageType: Tmdb.ImageType
 ) => {
-  const imageSizes = tmdbConfig.images.poster_sizes;
+  const imageSizes =
+    imageType === "poster"
+      ? tmdbConfig.images.poster_sizes
+      : tmdbConfig.images.backdrop_sizes;
   const imageUrls: { [key: string]: string } = {};
   imageSizes.forEach(
     size =>

@@ -91,7 +91,7 @@ declare namespace Tmdb {
     total_results: number;
   };
 
-  type ImageType = "poster";
+  type ImageType = "poster" | "backdrop";
 
   interface Error {
     status_message: string;

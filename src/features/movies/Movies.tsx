@@ -33,7 +33,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
     moviesError
   ] = useMovies(endpoint);
   return movies.length && tmdbConfig ? (
-    <Stack spacing="4" p="4">
+    <Stack spacing="4" p="4" mt="4">
       <Heading as="h1">{title}</Heading>
       <Grid
         gridTemplateColumns={[
@@ -51,22 +51,46 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
             key={movie.id}
             borderRadius="md"
             overflow="hidden"
+            _hover={{ textDecor: "none" }}
           >
             <PseudoBox
+              role="group"
               pos="relative"
               boxShadow="md"
               transition="opacity 0.2s ease-in-out"
               _hover={{ opacity: 0.8 }}
             >
-              <TmdbImage
-                path={movie.poster_path!}
-                tmdbConfig={tmdbConfig!}
-                imageType="poster"
-                sizes="(max-width: 30em) 150px, 300px"
-                css={css`
-                  width: 100%;
-                `}
-              />
+              {movie.poster_path && (
+                <TmdbImage
+                  path={movie.poster_path}
+                  tmdbConfig={tmdbConfig}
+                  imageType="poster"
+                  sizes="(max-width: 30em) 150px, 300px"
+                  css={css`
+                    width: 100%;
+                  `}
+                />
+              )}
+              <PseudoBox
+                transform="translatey(1rem)"
+                opacity={0}
+                transition="transform 0.2s ease-in-out, opacity 0.2s ease-in-out"
+                _groupHover={{ transform: "translatey(0)", opacity: 1 }}
+              >
+                <Text
+                  pos="absolute"
+                  fontWeight="bold"
+                  right="0"
+                  bottom="0"
+                  left="0"
+                  p="2"
+                  pt="4"
+                  backgroundImage="linear-gradient(to top, #000, transparent)"
+                  isTruncated
+                >
+                  {movie.title}
+                </Text>
+              </PseudoBox>
             </PseudoBox>
           </Link>
         ))}

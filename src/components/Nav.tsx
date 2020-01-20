@@ -12,10 +12,10 @@ const Nav = () => {
   return (
     <Flex
       p="4"
-      borderBottom="1px"
-      borderColor="gray.700"
       justifyContent="space-between"
       alignItems="center"
+      boxShadow="lg"
+      bg="gray.900"
     >
       <Link
         // @ts-ignore
