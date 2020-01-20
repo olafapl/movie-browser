@@ -20,11 +20,12 @@ const TmdbImage: React.FC<TmdbImageProps> = ({
   sizes
 }) => {
   const imageUrls = getImageUrls(path, tmdbConfig, imageType);
+  const imageSizes = Object.keys(imageUrls);
   const widthRegex = /w\d+/;
   return (
     <Image
-      src={Object.values(imageUrls)[0]}
-      srcSet={Object.keys(imageUrls)
+      src={Object.values(imageUrls)[Math.floor(imageSizes.length / 2)]}
+      srcSet={imageSizes
         .filter(size => widthRegex.test(size))
         .map(size => `${imageUrls[size]} ${size.slice(1)}w`)
         .join(", ")}
