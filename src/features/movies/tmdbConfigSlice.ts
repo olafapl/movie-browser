@@ -6,12 +6,14 @@ interface TmdbConfigState {
   config: Tmdb.Config | null;
   isFetching: boolean;
   error: string | null;
+  fetchDate: number | null;
 }
 
 const initialState: TmdbConfigState = {
   config: null,
   isFetching: false,
-  error: null
+  error: null,
+  fetchDate: null
 };
 
 const tmdbConfigSlice = createSlice({
@@ -21,6 +23,7 @@ const tmdbConfigSlice = createSlice({
     getConfigSuccess(state, action: PayloadAction<Tmdb.Config>) {
       state.config = action.payload;
       state.error = null;
+      state.fetchDate = new Date().getTime();
     },
     getConfigFailed(state, action: PayloadAction<string>) {
       state.error = action.payload;
