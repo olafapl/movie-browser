@@ -4,7 +4,6 @@ import { Global } from "@emotion/core";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "whatwg-fetch";
 import store, { persistor } from "store";
 import Movies from "features/movies/Movies";
 import Movie from "features/movies/Movie";

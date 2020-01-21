@@ -11,8 +11,7 @@ import TmdbImage from "components/TmdbImage";
 const Movie = () => {
   const { id } = useParams();
   const [movie, isFetchingMovie, movieError] = useMovie(Number.parseInt(id!));
-  const [tmdbConfig, isFetchingTmdbConfig, tmdbConfigError] = useTmdbConfig();
-  return movie && tmdbConfig ? (
+  return movie ? (
     <Box>
       <Head title={movie.title} />
       <Box pos="relative">
@@ -35,7 +34,6 @@ const Movie = () => {
             >
               <TmdbImage
                 path={movie.poster_path}
-                tmdbConfig={tmdbConfig}
                 imageType="poster"
                 sizes="33vw"
               />
@@ -50,7 +48,6 @@ const Movie = () => {
           <Box pos="absolute" top="0" right="0" bottom="0" left="0">
             <TmdbImage
               path={movie.backdrop_path}
-              tmdbConfig={tmdbConfig}
               imageType="backdrop"
               sizes="100vw"
               css={css`
@@ -67,10 +64,10 @@ const Movie = () => {
     </Box>
   ) : (
     <Flex alignItems="center" justifyContent="center" flex="1">
-      {isFetchingMovie || isFetchingTmdbConfig ? (
+      {isFetchingMovie ? (
         <Spinner />
       ) : (
-        (movieError || tmdbConfigError) && <Text>An error occurred.</Text>
+        movieError && <Text>An error occurred.</Text>
       )}
     </Flex>
   );

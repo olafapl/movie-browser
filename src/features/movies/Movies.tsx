@@ -14,7 +14,6 @@ import {
   Text
 } from "@chakra-ui/core";
 import { Link as RouterLink } from "react-router-dom";
-import useTmdbConfig from "features/movies/useTmdbConfig";
 import useMovies from "features/movies/useMovies";
 import TmdbImage from "components/TmdbImage";
 
@@ -24,7 +23,6 @@ interface MoviesProps {
 }
 
 const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
-  const [tmdbConfig, isFetchingTmdbConfig, tmdbConfigError] = useTmdbConfig();
   const [
     movies,
     fetchNextPage,
@@ -32,7 +30,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
     isFetchingMovies,
     moviesError
   ] = useMovies(endpoint);
-  return movies.length && tmdbConfig ? (
+  return movies.length ? (
     <Stack spacing="4" p="4" mt="4">
       <Heading as="h1">{title}</Heading>
       <Grid
@@ -63,7 +61,6 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
               {movie.poster_path && (
                 <TmdbImage
                   path={movie.poster_path}
-                  tmdbConfig={tmdbConfig}
                   imageType="poster"
                   sizes="(max-width: 30em) 150px, 300px"
                   css={css`
@@ -109,10 +106,10 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
     </Stack>
   ) : (
     <Flex alignItems="center" justifyContent="center" flex="1">
-      {isFetchingMovies || isFetchingTmdbConfig ? (
+      {isFetchingMovies ? (
         <Spinner />
       ) : (
-        (moviesError || tmdbConfigError) && <Text>An error occurred.</Text>
+        moviesError && <Text>An error occurred.</Text>
       )}
     </Flex>
   );
