@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import css from "@emotion/css/macro";
@@ -16,6 +16,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import useMovies from "features/movies/useMovies";
 import TmdbImage from "components/TmdbImage";
+import useQueryParam from "hooks/useQueryParam";
 
 interface MoviesProps {
   title: string;
@@ -23,22 +24,36 @@ interface MoviesProps {
 }
 
 const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
+  const [pageQueryParam, setPageQueryParam] = useQueryParam("page");
+  const page = Number.parseInt((pageQueryParam as unknown) as string);
   const [
     movies,
-    fetchNextPage,
-    hasNextPage,
+    setPage,
+    currentPage,
+    totalPages,
     isFetchingMovies,
     moviesError
-  ] = useMovies(endpoint);
+  ] = useMovies(endpoint, Number.isNaN(page) ? 1 : page);
+  const goToPage = useCallback(
+    (page: number) => {
+      if (page > 0 && totalPages && page <= totalPages) {
+        setPage(page);
+        setPageQueryParam(page.toString());
+        window.scrollTo(0, 0);
+      }
+    },
+    [setPage, totalPages, setPageQueryParam]
+  );
   return movies.length ? (
     <Stack spacing="4" p="4" mt="4">
       <Heading as="h1">{title}</Heading>
       <Grid
         gridTemplateColumns={[
-          "repeat(auto-fit, minmax(100px, 1fr))",
-          "repeat(auto-fit, minmax(200px, 1fr))"
+          "repeat(2, 1fr)",
+          "repeat(4, 1fr)",
+          "repeat(5, 1fr)"
         ]}
-        gap={[2, 4]}
+        gap="4"
         alignItems="flex-start"
       >
         {movies.map(movie => (
@@ -62,7 +77,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
                 <TmdbImage
                   path={movie.poster_path}
                   imageType="poster"
-                  sizes="(max-width: 30em) 150px, 300px"
+                  sizes="(max-width: 30em) 50vw, (max-width: 48em) 25vw, 20vw"
                   css={css`
                     width: 100%;
                   `}
@@ -92,17 +107,30 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
           </Link>
         ))}
       </Grid>
-      {hasNextPage && (
-        <Flex justifyContent="center">
-          <Button
-            variant="ghost"
-            isLoading={!!isFetchingMovies}
-            onClick={() => fetchNextPage()}
-          >
-            Load more
-          </Button>
-        </Flex>
-      )}
+      <Flex justifyContent="center">
+        <Stack isInline spacing="2">
+          {totalPages && currentPage > 1 && (
+            <Button
+              variant="ghost"
+              isDisabled={!!isFetchingMovies}
+              onClick={() => goToPage(currentPage - 1)}
+              leftIcon="arrow-back"
+            >
+              Previous
+            </Button>
+          )}
+          {totalPages && currentPage < totalPages && (
+            <Button
+              variant="ghost"
+              isDisabled={!!isFetchingMovies}
+              onClick={() => goToPage(currentPage + 1)}
+              rightIcon="arrow-forward"
+            >
+              Next
+            </Button>
+          )}
+        </Stack>
+      </Flex>
     </Stack>
   ) : (
     <Flex alignItems="center" justifyContent="center" flex="1">

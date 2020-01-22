@@ -21,17 +21,29 @@ const App: React.FC = () => {
             <Router>
               <Nav />
               <Switch>
-                <Route path="/movie/:id">
+                <Route exact path="/movie/:id">
                   <Movie />
                 </Route>
                 <Route exact path="/movies/popular">
-                  <Movies title="Popular" endpoint="movie/popular" />
+                  <Movies
+                    key="popular"
+                    title="Popular"
+                    endpoint="movie/popular"
+                  />
                 </Route>
                 <Route exact path="/movies/top-rated">
-                  <Movies title="Top rated" endpoint="movie/top_rated" />
+                  <Movies
+                    key="top-rated"
+                    title="Top rated"
+                    endpoint="movie/top_rated"
+                  />
                 </Route>
                 <Route exact path="/(movies/trending|movies|)/">
-                  <Movies title="Trending" endpoint="trending/movie/day" />
+                  <Movies
+                    key="trending"
+                    title="Trending"
+                    endpoint="trending/movie/day"
+                  />
                 </Route>
                 <Route>
                   <Flex alignItems="center" justifyContent="center" flex="1">

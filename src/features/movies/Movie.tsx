@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { Flex, Spinner, Box, Text, Heading, Stack } from "@chakra-ui/core";
 import css from "@emotion/css/macro";
 import useMovie from "features/movies/useMovie";
-import useTmdbConfig from "features/movies/useTmdbConfig";
 import Head from "components/Head";
 import TmdbImage from "components/TmdbImage";
 

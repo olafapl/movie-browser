@@ -3,8 +3,10 @@ import { AppThunk } from "store";
 import { getMovies } from "api/tmdb";
 
 interface MoviesResults {
-  movies: Tmdb.MovieResult[];
-  lastPage: number | null;
+  pages: {
+    // pageNumber: results
+    [key: number]: Tmdb.MovieResult[];
+  };
   totalPages: number | null;
   isFetching: boolean;
   error: string | null;
@@ -17,8 +19,7 @@ interface MoviesState {
 const initialState: MoviesState = {};
 
 const initialResultsState: MoviesResults = {
-  movies: [],
-  lastPage: null,
+  pages: {},
   totalPages: null,
   isFetching: false,
   error: null
@@ -51,24 +52,13 @@ const moviesSlice = createSlice({
       }
       state[endpoint] = {
         ...state[endpoint],
-        totalPages: results.total_pages
+        totalPages: results.total_pages,
+        pages: {
+          ...state[endpoint].pages,
+          [results.page]: results.results
+        },
+        error: null
       };
-      if (results.page === 1) {
-        state[endpoint] = {
-          ...state[endpoint],
-          lastPage: 1,
-          movies: results.results
-        };
-      } else if (
-        state[endpoint]?.lastPage &&
-        results.page === state[endpoint]?.lastPage + 1
-      ) {
-        state[endpoint].movies.push(...results.results);
-        state[endpoint] = {
-          ...state[endpoint],
-          lastPage: results.page
-        };
-      }
     },
     getMoviesFailed(state, action: PayloadAction<FailedPayload>) {
       const { endpoint, error } = action.payload;
