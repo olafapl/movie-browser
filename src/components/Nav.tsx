@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Text, Link, Stack } from "@chakra-ui/core";
+import { Flex, Link, Stack } from "@chakra-ui/core";
 import { Link as BrowserLink } from "react-router-dom";
 
 const routes = [
@@ -17,13 +17,6 @@ const Nav = () => {
       boxShadow="lg"
       bg="gray.900"
     >
-      <Link
-        // @ts-ignore
-        as={BrowserLink}
-        to="/"
-      >
-        <Text fontWeight="bold">Movie Poller</Text>
-      </Link>
       <Stack isInline spacing="4">
         {routes.map(({ title, path }) => (
           <Link
@@ -36,6 +29,13 @@ const Nav = () => {
           </Link>
         ))}
       </Stack>
+      <Link
+        // @ts-ignore
+        as={BrowserLink}
+        to="/about"
+      >
+        About
+      </Link>
     </Flex>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider, CSSReset, DarkMode, Text, Flex } from "@chakra-ui/core";
+import { ThemeProvider, CSSReset, DarkMode } from "@chakra-ui/core";
 import { Global } from "@emotion/core";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -7,7 +7,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import store, { persistor } from "store";
 import Movies from "features/movies/Movies";
 import Movie from "features/movies/Movie";
+import About from "features/about/About";
 import Nav from "components/Nav";
+import Error from "components/Error";
 import { globalStyles, theme } from "styles";
 
 const App: React.FC = () => {
@@ -45,10 +47,11 @@ const App: React.FC = () => {
                     endpoint="trending/movie/day"
                   />
                 </Route>
+                <Route exact path="/about">
+                  <About />
+                </Route>
                 <Route>
-                  <Flex alignItems="center" justifyContent="center" flex="1">
-                    <Text>Could not find the requested page.</Text>
-                  </Flex>
+                  <Error />
                 </Route>
               </Switch>
             </Router>
