@@ -27,25 +27,13 @@ const App: React.FC = () => {
                   <Movie />
                 </Route>
                 <Route exact path="/movies/popular">
-                  <Movies
-                    key="popular"
-                    title="Popular"
-                    endpoint="movie/popular"
-                  />
+                  <Movies title="Popular" endpoint="movie/popular" />
                 </Route>
                 <Route exact path="/movies/top-rated">
-                  <Movies
-                    key="top-rated"
-                    title="Top rated"
-                    endpoint="movie/top_rated"
-                  />
+                  <Movies title="Top rated" endpoint="movie/top_rated" />
                 </Route>
                 <Route exact path="/(movies/trending|movies|)/">
-                  <Movies
-                    key="trending"
-                    title="Trending"
-                    endpoint="trending/movie/day"
-                  />
+                  <Movies title="Trending" endpoint="trending/movie/day" />
                 </Route>
                 <Route exact path="/about">
                   <About />

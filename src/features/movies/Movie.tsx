@@ -78,9 +78,11 @@ const Movie = () => {
             <Text as="time" title="Release year">
               {new Date(movie.release_date).getFullYear()}
             </Text>
-            <Text title="Runtime">{`${Math.floor(
-              movie.runtime / 60
-            )} h ${movie.runtime % 60} min`}</Text>
+            {movie.runtime > 0 && (
+              <Text title="Runtime">{`${Math.floor(
+                movie.runtime / 60
+              )} h ${movie.runtime % 60} min`}</Text>
+            )}
           </Stack>
           {movie.genres.length && (
             <Stack

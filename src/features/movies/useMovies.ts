@@ -8,52 +8,46 @@ import useSelector from "hooks/useSelector";
  */
 const useMovies = (
   endpoint: string,
-  initialPage?: number
+  page: number
 ): [
-  Tmdb.MovieResult[],
-  (page: number) => void,
-  number,
+  Tmdb.MovieResult[] | null,
   number | null,
   boolean | null,
   string | null
 ] => {
-  const [currentPage, setCurrentPage] = useState(initialPage ?? 1);
-  const [previousPage, setPreviousPage] = useState(-1);
+  const [previousFetchedPage, setPreviousFetchedPage] = useState(-1);
   const results = useSelector(state => state.movies[endpoint]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setPreviousFetchedPage(-1);
+  }, [endpoint, setPreviousFetchedPage]);
+
   useEffect(() => {
     const fetchPage = (page: number) => {
       dispatch(fetchMovies(endpoint, page));
-      setPreviousPage(currentPage);
+      setPreviousFetchedPage(page);
     };
-    if (previousPage !== currentPage) {
-      if (results) {
-        const { pages, isFetching } = results;
-        if (!isFetching && !pages[currentPage]) {
-          fetchPage(currentPage);
-        }
-      } else {
-        fetchPage(currentPage);
-      }
+    if (
+      previousFetchedPage !== page &&
+      (!results || (!results.isFetching && !results.pages[page]))
+    ) {
+      fetchPage(page);
     }
-  }, [results, currentPage, previousPage, setPreviousPage, dispatch, endpoint]);
+  }, [
+    endpoint,
+    page,
+    previousFetchedPage,
+    setPreviousFetchedPage,
+    results,
+    dispatch
+  ]);
+
   if (results) {
     const { pages, isFetching, totalPages, error } = results;
-    const setPage = (page: number) => {
-      if (page > 0 && totalPages && page <= totalPages) {
-        setCurrentPage(page);
-      }
-    };
-    return [
-      pages[currentPage] ?? [],
-      setPage,
-      currentPage,
-      totalPages,
-      isFetching,
-      error
-    ];
+    return [pages[page] ?? [], totalPages, isFetching, error];
   } else {
-    return [[], (_: number) => {}, currentPage, null, null, null];
+    return [null, null, null, null];
   }
 };
 

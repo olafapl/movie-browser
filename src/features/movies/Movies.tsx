@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import css from "@emotion/css/macro";
@@ -6,6 +6,7 @@ import {
   Flex,
   Spinner,
   Heading,
+  Box,
   Grid,
   Stack,
   Button,
@@ -25,15 +26,20 @@ interface MoviesProps {
 
 const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
   const [pageQueryParam, setPageQueryParam] = useQueryParam("page");
-  const page = Number.parseInt((pageQueryParam as unknown) as string);
-  const [
-    movies,
-    setPage,
-    currentPage,
-    totalPages,
-    isFetchingMovies,
-    moviesError
-  ] = useMovies(endpoint, Number.isNaN(page) ? 1 : page);
+  const [page, setPage] = useState(1);
+  const [movies, totalPages, isFetching, error] = useMovies(endpoint, page);
+
+  useEffect(() => {
+    const pageQueryParamValue = Number.parseInt(
+      (pageQueryParam as unknown) as string
+    );
+    if (Number.isNaN(pageQueryParamValue)) {
+      setPage(1);
+    } else if (pageQueryParamValue !== page) {
+      setPage(pageQueryParamValue);
+    }
+  }, [endpoint, page, setPage, pageQueryParam]);
+
   const goToPage = useCallback(
     (page: number) => {
       if (page > 0 && totalPages && page <= totalPages) {
@@ -44,7 +50,8 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
     },
     [setPage, totalPages, setPageQueryParam]
   );
-  return movies.length ? (
+
+  return movies?.length ? (
     <Stack spacing="4" p="4" mt="4">
       <Heading as="h1">{title}</Heading>
       <Grid
@@ -62,18 +69,22 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
             as={RouterLink}
             to={`/movie/${movie.id}`}
             key={movie.id}
+            pos="relative"
+            height="100%"
+            width="100%"
             borderRadius="md"
             overflow="hidden"
             _hover={{ textDecor: "none" }}
           >
             <PseudoBox
               role="group"
-              pos="relative"
+              height="100%"
+              width="100%"
               boxShadow="md"
               transition="opacity 0.2s ease-in-out"
               _hover={{ opacity: 0.8 }}
             >
-              {movie.poster_path && (
+              {movie.poster_path ? (
                 <TmdbImage
                   path={movie.poster_path}
                   imageType="poster"
@@ -82,24 +93,27 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
                     width: 100%;
                   `}
                 />
+              ) : (
+                <Box
+                  height="100%"
+                  width="100%"
+                  backgroundColor="gray.700"
+                ></Box>
               )}
               <PseudoBox
+                pos="absolute"
                 transform="translatey(1rem)"
+                right="0"
+                bottom="0"
+                left="0"
+                p="2"
+                pt="4"
+                backgroundImage="linear-gradient(to top, #000, transparent)"
                 opacity={0}
                 transition="transform 0.2s ease-in-out, opacity 0.2s ease-in-out"
                 _groupHover={{ transform: "translatey(0)", opacity: 1 }}
               >
-                <Text
-                  pos="absolute"
-                  fontWeight="bold"
-                  right="0"
-                  bottom="0"
-                  left="0"
-                  p="2"
-                  pt="4"
-                  backgroundImage="linear-gradient(to top, #000, transparent)"
-                  isTruncated
-                >
+                <Text fontWeight="bold" isTruncated>
                   {movie.title}
                 </Text>
               </PseudoBox>
@@ -109,21 +123,21 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
       </Grid>
       <Flex justifyContent="center">
         <Stack isInline spacing="2">
-          {totalPages && currentPage > 1 && (
+          {totalPages && page > 1 && (
             <Button
               variant="ghost"
-              isDisabled={!!isFetchingMovies}
-              onClick={() => goToPage(currentPage - 1)}
+              isDisabled={!!isFetching}
+              onClick={() => goToPage(page - 1)}
               leftIcon="arrow-back"
             >
               Previous
             </Button>
           )}
-          {totalPages && currentPage < totalPages && (
+          {totalPages && page < totalPages && (
             <Button
               variant="ghost"
-              isDisabled={!!isFetchingMovies}
-              onClick={() => goToPage(currentPage + 1)}
+              isDisabled={!!isFetching}
+              onClick={() => goToPage(page + 1)}
               rightIcon="arrow-forward"
             >
               Next
@@ -134,11 +148,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
     </Stack>
   ) : (
     <Flex alignItems="center" justifyContent="center" flex="1">
-      {isFetchingMovies ? (
-        <Spinner />
-      ) : (
-        moviesError && <Text>An error occurred.</Text>
-      )}
+      {isFetching ? <Spinner /> : error && <Text>An error occurred.</Text>}
     </Flex>
   );
 };
