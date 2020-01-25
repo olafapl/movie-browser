@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Heading, Stack } from "@chakra-ui/core";
 import useMovies from "features/movies/useMovies";
 import MovieGrid from "features/movies/MovieGrid";
@@ -11,8 +11,9 @@ interface MoviesProps {
 
 const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
   const [pageQueryParam, setPageQueryParam] = useQueryParam("page");
-  const [page, setPage] = useState(1);
-  const [movies, totalPages, isFetching, error] = useMovies(endpoint, page);
+  const [movies, page, setPage, totalPages, isFetching, error] = useMovies(
+    endpoint
+  );
 
   useEffect(() => {
     const pageQueryParamValue = Number.parseInt(

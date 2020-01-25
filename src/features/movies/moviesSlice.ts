@@ -70,7 +70,7 @@ const moviesSlice = createSlice({
         error
       };
     },
-    isFetching(state, action: PayloadAction<IsFetchingPayload>) {
+    setIsFetching(state, action: PayloadAction<IsFetchingPayload>) {
       const { endpoint, isFetching } = action.payload;
       if (!(endpoint in state)) {
         state[endpoint] = initialResultsState;
@@ -86,7 +86,7 @@ const moviesSlice = createSlice({
 export const {
   getMoviesSuccess,
   getMoviesFailed,
-  isFetching
+  setIsFetching
 } = moviesSlice.actions;
 
 export const fetchMovies = (
@@ -94,7 +94,7 @@ export const fetchMovies = (
   page: number
 ): AppThunk => async dispatch => {
   try {
-    dispatch(isFetching({ isFetching: true, endpoint }));
+    dispatch(setIsFetching({ isFetching: true, endpoint }));
     const results = await getMovies(endpoint, page);
     if ("results" in results) {
       dispatch(getMoviesSuccess({ results, endpoint }));
@@ -109,7 +109,7 @@ export const fetchMovies = (
   } catch (err) {
     dispatch(getMoviesFailed(err.toString()));
   } finally {
-    dispatch(isFetching({ isFetching: false, endpoint }));
+    dispatch(setIsFetching({ isFetching: false, endpoint }));
   }
 };
 

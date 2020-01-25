@@ -7,47 +7,30 @@ import useSelector from "hooks/useSelector";
  * @param endpoint TMDB API endpoint to fetch movies from.
  */
 const useMovies = (
-  endpoint: string,
-  page: number
+  endpoint: string
 ): [
   Tmdb.MovieResult[] | null,
+  number,
+  (page: number) => void,
   number | null,
   boolean | null,
   string | null
 ] => {
-  const [previousFetchedPage, setPreviousFetchedPage] = useState(-1);
+  const [page, setPage] = useState(1);
   const results = useSelector(state => state.movies[endpoint]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setPreviousFetchedPage(-1);
-  }, [endpoint, setPreviousFetchedPage]);
-
-  useEffect(() => {
-    const fetchPage = (page: number) => {
+    if (endpoint) {
       dispatch(fetchMovies(endpoint, page));
-      setPreviousFetchedPage(page);
-    };
-    if (
-      previousFetchedPage !== page &&
-      (!results || (!results.isFetching && !results.pages[page]))
-    ) {
-      fetchPage(page);
     }
-  }, [
-    endpoint,
-    page,
-    previousFetchedPage,
-    setPreviousFetchedPage,
-    results,
-    dispatch
-  ]);
+  }, [endpoint, page, dispatch]);
 
   if (results) {
     const { pages, isFetching, totalPages, error } = results;
-    return [pages[page] ?? [], totalPages, isFetching, error];
+    return [pages[page] ?? [], page, setPage, totalPages, isFetching, error];
   } else {
-    return [null, null, null, null];
+    return [null, page, setPage, null, null, null];
   }
 };
 

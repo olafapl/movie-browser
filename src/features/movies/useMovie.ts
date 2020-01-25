@@ -2,6 +2,9 @@ import { useDispatch } from "react-redux";
 import { fetchMovie } from "features/movies/movieSlice";
 import useSelector from "hooks/useSelector";
 
+/**
+ * @param movieId TMDB movie ID.
+ */
 const useMovie = (
   movieId: number
 ): [Tmdb.Movie | null, boolean | null, string | null] => {
