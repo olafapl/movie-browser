@@ -7,7 +7,7 @@ const useQueryParam = (
 ): [string | string[] | null, (value: string | string[]) => void] => {
   const history = useHistory();
   const location = useLocation();
-  const updateValue = useCallback(
+  const setValue = useCallback(
     (value: string | string[]) => {
       const parsedQueryString = queryString.parse(location.search);
       history.push({
@@ -16,7 +16,7 @@ const useQueryParam = (
     },
     [location, history, key]
   );
-  return [queryString.parse(location.search)[key] ?? null, updateValue];
+  return [queryString.parse(location.search)[key] ?? null, setValue];
 };
 
 export default useQueryParam;

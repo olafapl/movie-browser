@@ -21,7 +21,7 @@ import TmdbImage from "components/TmdbImage";
 
 const Movie = () => {
   const { id } = useParams();
-  const [movie, isFetchingMovie, movieError] = useMovie(Number.parseInt(id!));
+  const [movie, isFetching, error] = useMovie(Number.parseInt(id!));
   return movie ? (
     <React.Fragment>
       <Head title={movie.title} />
@@ -72,7 +72,7 @@ const Movie = () => {
           </Box>
         )}
       </Box>
-      <Stack px="4" pb="4" spacing="4">
+      <Stack px="4" pb="8" spacing="4">
         <Stack spacing="2">
           <Stack isInline spacing="4" color="whiteAlpha.700">
             <Text as="time" title="Release year">
@@ -117,11 +117,7 @@ const Movie = () => {
     </React.Fragment>
   ) : (
     <Flex alignItems="center" justifyContent="center" flex="1">
-      {isFetchingMovie ? (
-        <Spinner />
-      ) : (
-        movieError && <Text>An error occurred.</Text>
-      )}
+      {isFetching ? <Spinner /> : error && <Text>An error occurred.</Text>}
     </Flex>
   );
 };

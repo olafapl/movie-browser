@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Stack } from "@chakra-ui/core";
+import { Flex } from "@chakra-ui/core";
 import useSearchResults from "features/search/useSearchResults";
 import MovieGrid from "features/movies/MovieGrid";
 
@@ -24,7 +24,7 @@ const SearchResults: React.FC = () => {
   );
 
   return (
-    <Stack spacing="8" p="4" mt="4" flex="1">
+    <Flex flexDirection="column" py="8" px="4" flex="1">
       <MovieGrid
         movies={movies}
         page={page}
@@ -34,7 +34,7 @@ const SearchResults: React.FC = () => {
         isLoading={!!isFetching}
         error={error}
       />
-    </Stack>
+    </Flex>
   );
 };
 

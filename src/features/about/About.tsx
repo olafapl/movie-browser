@@ -4,7 +4,7 @@ import { ReactComponent as TmdbLogo } from "features/about/tmdb-logo.svg";
 
 const About = () => {
   return (
-    <Flex direction="column" alignItems="center" p="4">
+    <Flex direction="column" alignItems="center" py="8" px="4">
       <Box width="7rem" mb="4">
         <TmdbLogo />
       </Box>

@@ -38,7 +38,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({
   return (
     <React.Fragment>
       {movies?.length ? (
-        <Stack spacing="4">
+        <React.Fragment>
           <Grid
             gridTemplateColumns={[
               "repeat(2, 1fr)",
@@ -106,31 +106,33 @@ const MovieGrid: React.FC<MovieGridProps> = ({
               </Link>
             ))}
           </Grid>
-          <Flex justifyContent="center">
-            <Stack isInline spacing="2">
-              {showPreviousButton && (
-                <Button
-                  variant="ghost"
-                  isDisabled={isLoading}
-                  onClick={() => setPage(page - 1)}
-                  leftIcon="arrow-back"
-                >
-                  Previous
-                </Button>
-              )}
-              {showNextButton && (
-                <Button
-                  variant="ghost"
-                  isDisabled={isLoading}
-                  onClick={() => setPage(page + 1)}
-                  rightIcon="arrow-forward"
-                >
-                  Next
-                </Button>
-              )}
-            </Stack>
-          </Flex>
-        </Stack>
+          {(showPreviousButton || showNextButton) && (
+            <Flex justifyContent="center" mt="4">
+              <Stack isInline spacing="2">
+                {showPreviousButton && (
+                  <Button
+                    variant="ghost"
+                    isDisabled={isLoading}
+                    onClick={() => setPage(page - 1)}
+                    leftIcon="arrow-back"
+                  >
+                    Previous
+                  </Button>
+                )}
+                {showNextButton && (
+                  <Button
+                    variant="ghost"
+                    isDisabled={isLoading}
+                    onClick={() => setPage(page + 1)}
+                    rightIcon="arrow-forward"
+                  >
+                    Next
+                  </Button>
+                )}
+              </Stack>
+            </Flex>
+          )}
+        </React.Fragment>
       ) : (
         <Flex alignItems="center" justifyContent="center" flex="1">
           {isLoading ? <Spinner /> : error && <Text>An error occurred.</Text>}

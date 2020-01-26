@@ -38,7 +38,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
   );
 
   return (
-    <Stack spacing="4" p="4" mt="4" flex="1">
+    <Stack spacing="4" py="8" px="4" flex="1">
       <Heading as="h1">{title}</Heading>
       <MovieGrid
         movies={movies}
