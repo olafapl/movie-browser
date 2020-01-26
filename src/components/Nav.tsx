@@ -30,15 +30,18 @@ const Nav = () => {
   const [query, setQuery] = useSearchQuery();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const onInputChange = (event: React.FormEvent) => {
+  const redirectoToSearch = () => {
     if (history.location.pathname !== "/search") {
       history.push({ pathname: "/search" });
     }
+  };
+  const onInputChange = (event: React.FormEvent) => {
+    redirectoToSearch();
     setQuery((event.target as HTMLInputElement).value);
   };
   const onInputKeyUp = (event: React.KeyboardEvent) => {
     if (event.keyCode === 13) {
-      history.push({ pathname: "/search" });
+      redirectoToSearch();
     }
   };
   return (
