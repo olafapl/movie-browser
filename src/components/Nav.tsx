@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Link,
@@ -30,8 +30,16 @@ const Nav = () => {
   const [query, setQuery] = useSearchQuery();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const onInputFocus = () => {
-    history.push({ pathname: "/search" });
+  const onInputChange = (event: React.FormEvent) => {
+    if (history.location.pathname !== "/search") {
+      history.push({ pathname: "/search" });
+    }
+    setQuery((event.target as HTMLInputElement).value);
+  };
+  const onInputKeyUp = (event: React.KeyboardEvent) => {
+    if (event.keyCode === 13) {
+      history.push({ pathname: "/search" });
+    }
   };
   return (
     <>
@@ -49,10 +57,8 @@ const Nav = () => {
             pl="10"
             placeholder="Search ..."
             value={query}
-            onFocus={onInputFocus}
-            onChange={(event: React.FormEvent) =>
-              setQuery((event.target as HTMLInputElement).value)
-            }
+            onChange={onInputChange}
+            onKeyUp={onInputKeyUp}
           />
           <InputLeftElement p="">
             <Icon name="search" color="gray.500" />
