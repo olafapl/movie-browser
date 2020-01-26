@@ -10,6 +10,7 @@ import storage from "redux-persist/lib/storage";
 import tmdbConfigReducer from "features/movies/tmdbConfigSlice";
 import moviesReducer from "features/movies/moviesSlice";
 import movieReducer from "features/movies/movieSlice";
+import searchReducer from "features/search/searchSlice";
 
 export const rootReducer = combineReducers({
   tmdbConfig: persistReducer(
@@ -20,7 +21,8 @@ export const rootReducer = combineReducers({
     tmdbConfigReducer
   ),
   movies: moviesReducer,
-  movie: movieReducer
+  movie: movieReducer,
+  search: searchReducer
 });
 export type RootState = ReturnType<typeof rootReducer>;
 

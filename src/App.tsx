@@ -8,6 +8,7 @@ import store, { persistor } from "store";
 import Movies from "features/movies/Movies";
 import Movie from "features/movies/Movie";
 import About from "features/about/About";
+import SearchResults from "features/search/SearchResults";
 import Nav from "components/Nav";
 import Error from "components/Error";
 import { globalStyles, theme } from "styles";
@@ -37,6 +38,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route exact path="/about">
                   <About />
+                </Route>
+                <Route exact path="/search">
+                  <SearchResults />
                 </Route>
                 <Route>
                   <Error />

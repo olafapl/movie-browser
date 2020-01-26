@@ -10,6 +10,7 @@
     "date-fns": "^2.9.0",
     "emotion-theming": "^10.0.27",
     "firebase": "^7.6.2",
+    "lodash.debounce": "^4.0.8",
     "query-string": "^6.10.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -22,6 +23,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "typescript": "~3.7.2",
+    "use-lodash-debounce": "^1.1.0",
     "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
