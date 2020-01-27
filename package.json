@@ -6,7 +6,7 @@
     "@chakra-ui/core": "^0.5.2",
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
-    "@reduxjs/toolkit": "^1.2.2",
+    "@reduxjs/toolkit": "^1.2.3",
     "date-fns": "^2.9.0",
     "emotion-theming": "^10.0.27",
     "firebase": "^7.6.2",

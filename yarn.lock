@@ -1643,10 +1643,10 @@
   resolved "https://registry.yarnpkg.com/@reach/visually-hidden/-/visually-hidden-0.1.4.tgz#0dc4ecedf523004337214187db70a46183bd945b"
   integrity sha512-QHbzXjflSlCvDd6vJwdwx16mSB+vUCCQMiU/wK/CgVNPibtpEiIbisyxkpZc55DyDFNUIqP91rSUsNae+ogGDQ==
 
-"@reduxjs/toolkit@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.2.2.tgz#1e786766ceac9b65be8708d89a2377a3a0e441ff"
-  integrity sha512-pXHh+2BO/VAcSU8IVkTYzz9odZkGx/Y3KQszI5VQCL7RIkZ3Skv7X+5WE5+tpXHYy2qwO76oeD0IC7lSxL4nCQ==
+"@reduxjs/toolkit@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.2.3.tgz#666f6085fab0f10f72dbafb8259496da9bd5914d"
+  integrity sha512-CgeZl41Bmz1rFkASt5gA9egCy9YWXzy485EsEXoGd2Xm1o63UQCxfuCLTH+XlTs25WqtGjSmn5H4xu7n86ytYw==
   dependencies:
     immer "^4.0.1"
     redux "^4.0.0"
