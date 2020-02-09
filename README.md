@@ -27,3 +27,7 @@ A React application for browsing movies.
 - [Chakra UI](https://chakra-ui.com/) (with [Emotion](https://emotion.sh/) and [Styled
   System](https://styled-system.com/)) &mdash; UI components / styling
 - Quite a few other technologies
+
+## License
+
+This project is licensed under the MIT license.
