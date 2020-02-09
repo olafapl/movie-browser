@@ -1,4 +1,4 @@
-# Movie Poller
+# Movie Browser
 
 A React application for browsing movies.
 

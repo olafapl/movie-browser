@@ -1,5 +1,5 @@
 {
-  "name": "movie-poller",
+  "name": "movie-browser",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
