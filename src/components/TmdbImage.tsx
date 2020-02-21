@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-/** @jsx jsx */
-import { jsx, css, keyframes } from "@emotion/core";
-import styled from "@emotion/styled/macro";
-import { AspectRatioBox, Box } from "@chakra-ui/core";
+import { keyframes } from "@emotion/core";
+import { Box, Image } from "theme-ui";
+import { darken } from "@theme-ui/color";
+import AspectRatio from "components/AspectRatio";
 import { getImageUrls } from "api/tmdb";
 import useTmdbConfig from "features/movies/useTmdbConfig";
 
@@ -14,13 +14,13 @@ interface TmdbImageProps {
   sizes?: string;
 }
 
-const TmdbImage: React.FC<TmdbImageProps> = ({
+const TmdbImage = ({
   path,
   imageType,
   className,
   alt,
   sizes
-}) => {
+}: TmdbImageProps) => {
   const [isLoadingImage, setIsLoadingImage] = useState(true);
   const [config, isFetchingConfig] = useTmdbConfig();
   const widthRegex = /w\d+/;
@@ -28,8 +28,7 @@ const TmdbImage: React.FC<TmdbImageProps> = ({
     const imageUrls = getImageUrls(path, config, imageType);
     const imageSizes = Object.keys(imageUrls);
     return (
-      <React.Fragment>
-        {/* The <></> syntax is currently not compatible with Emotion's css prop (https://github.com/emotion-js/emotion/issues/1303) */}
+      <>
         <Image
           src={Object.values(imageUrls)[Math.floor(imageSizes.length / 2)]}
           srcSet={imageSizes
@@ -40,13 +39,13 @@ const TmdbImage: React.FC<TmdbImageProps> = ({
           className={className}
           alt={alt}
           onLoad={() => setIsLoadingImage(false)}
-          css={css`
-            visibility: ${isLoadingImage ? "hidden" : "visible"};
-            opacity: ${isLoadingImage ? 0 : 1};
-            height: ${isLoadingImage ? 0 : "auto"};
-            width: ${isLoadingImage ? 0 : "auto"};
-            transition: visibility 0s, opacity 0.2s ease-in-out;
-          `}
+          sx={{
+            visibility: isLoadingImage ? "hidden" : "visible",
+            opacity: isLoadingImage ? 0 : 1,
+            height: isLoadingImage ? 0 : "auto",
+            width: isLoadingImage ? 0 : "auto",
+            transition: "visibility 0s, opacity 0.2s ease-in-out"
+          }}
         />
         {isLoadingImage && (
           <Placeholder
@@ -54,7 +53,7 @@ const TmdbImage: React.FC<TmdbImageProps> = ({
             isLoading={isFetchingConfig || isLoadingImage}
           />
         )}
-      </React.Fragment>
+      </>
     );
   } else {
     return <Placeholder imageType={imageType} isLoading={isFetchingConfig} />;
@@ -66,26 +65,30 @@ interface PlaceholderProps {
   isLoading?: boolean;
 }
 
-const Placeholder: React.FC<PlaceholderProps> = ({ imageType, isLoading }) => {
+const Placeholder = ({ imageType, isLoading }: PlaceholderProps) => {
   return (
-    <AspectRatioBox
-      maxWidth="100%"
+    <AspectRatio
       ratio={imageType === "poster" ? 2 / 3 : 16 / 9}
+      sx={{
+        width: "100%"
+      }}
     >
       <Box
-        backgroundImage={
-          imageType === "poster" ? "linear-gradient(45deg, #333, #222)" : ""
-        }
-        backgroundSize="400%"
-        animation={isLoading ? `${gradientPosition} 1.5s linear infinite` : ""}
+        sx={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: darken("muted", 0.05),
+          backgroundImage: theme =>
+            imageType === "poster"
+              ? `linear-gradient(45deg, ${theme.colors.muted}, transparent)`
+              : "",
+          backgroundSize: "400%",
+          animation: isLoading ? `${gradientPosition} 1.5s linear infinite` : ""
+        }}
       ></Box>
-    </AspectRatioBox>
+    </AspectRatio>
   );
 };
-
-const Image = styled.img`
-  max-width: 100%;
-`;
 
 const gradientPosition = keyframes`
   0% {

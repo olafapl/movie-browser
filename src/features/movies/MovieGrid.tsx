@@ -1,18 +1,6 @@
 import React from "react";
-/** @jsx jsx */
-import { jsx } from "@emotion/core";
 import css from "@emotion/css/macro";
-import {
-  Flex,
-  Spinner,
-  Box,
-  Grid,
-  Stack,
-  Button,
-  PseudoBox,
-  Link,
-  Text
-} from "@chakra-ui/core";
+import { Flex, Box, Grid, Button, Link, Text, Spinner } from "theme-ui";
 import { Link as RouterLink } from "react-router-dom";
 import TmdbImage from "components/TmdbImage";
 
@@ -26,7 +14,7 @@ interface MovieGridProps {
   error: string | null;
 }
 
-const MovieGrid: React.FC<MovieGridProps> = ({
+const MovieGrid = ({
   movies,
   page,
   setPage,
@@ -34,40 +22,42 @@ const MovieGrid: React.FC<MovieGridProps> = ({
   showNextButton,
   isLoading,
   error
-}) => {
+}: MovieGridProps) => {
   return (
     <React.Fragment>
       {movies?.length ? (
         <React.Fragment>
-          <Grid
-            gridTemplateColumns={[
-              "repeat(2, 1fr)",
-              "repeat(4, 1fr)",
-              "repeat(5, 1fr)"
-            ]}
-            gap="4"
-            alignItems="flex-start"
-          >
+          <Grid columns={[2, 4, 5]} gap="3" sx={{ alignItems: "center" }}>
             {movies.map(movie => (
               <Link
-                // @ts-ignore
                 as={RouterLink}
+                // @ts-ignore
                 to={`/movie/${movie.id}`}
                 key={movie.id}
-                pos="relative"
-                height={movie.poster_path ? "unset" : "100%"}
-                width="100%"
-                borderRadius="md"
-                overflow="hidden"
-                _hover={{ textDecor: "none" }}
+                sx={{
+                  position: "relative",
+                  height: movie.poster_path ? "unset" : "100%",
+                  width: "100%",
+                  overflow: "hidden",
+                  borderRadius: 1,
+                  color: "white",
+                  transition: "opacity 0.2s ease-in-out",
+                  ":hover, :focus": {
+                    opacity: 0.8,
+                    textDecoration: "none",
+                    color: "white",
+                    ".title": {
+                      transform: "translatey(0)",
+                      opacity: 1
+                    }
+                  }
+                }}
               >
-                <PseudoBox
-                  role="group"
-                  height="100%"
-                  width="100%"
-                  boxShadow="md"
-                  transition="opacity 0.2s ease-in-out"
-                  _hover={{ opacity: 0.8 }}
+                <Flex
+                  sx={{
+                    height: "100%",
+                    width: "100%"
+                  }}
                 >
                   {movie.poster_path ? (
                     <TmdbImage
@@ -79,62 +69,70 @@ const MovieGrid: React.FC<MovieGridProps> = ({
                       `}
                     />
                   ) : (
-                    <Box
-                      height="100%"
-                      width="100%"
-                      backgroundColor="gray.700"
-                    ></Box>
+                    <Box sx={{ height: "100%", width: "100%" }}></Box>
                   )}
-                  <PseudoBox
-                    pos="absolute"
-                    transform="translatey(1rem)"
-                    right="0"
-                    bottom="0"
-                    left="0"
-                    p="2"
-                    pt="4"
-                    backgroundImage="linear-gradient(to top, #000, transparent)"
-                    opacity={0}
-                    transition="transform 0.2s ease-in-out, opacity 0.2s ease-in-out"
-                    _groupHover={{ transform: "translatey(0)", opacity: 1 }}
+
+                  {/* TODO truncate text */}
+                  <Text
+                    className="title"
+                    variant="truncated"
+                    sx={{
+                      position: "absolute",
+                      transform: "translatey(1rem)",
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                      p: 2,
+                      pt: 3,
+                      backgroundImage:
+                        "linear-gradient(to top, #000, transparent)",
+                      fontWeight: "bold",
+                      opacity: 0,
+                      transition:
+                        "transform 0.2s ease-in-out, opacity 0.2s ease-in-out"
+                    }}
                   >
-                    <Text fontWeight="bold" isTruncated>
-                      {movie.title}
-                    </Text>
-                  </PseudoBox>
-                </PseudoBox>
+                    {movie.title}
+                  </Text>
+                </Flex>
               </Link>
             ))}
           </Grid>
           {(showPreviousButton || showNextButton) && (
-            <Flex justifyContent="center" mt="4">
-              <Stack isInline spacing="2">
-                {showPreviousButton && (
-                  <Button
-                    variant="ghost"
-                    isDisabled={isLoading}
-                    onClick={() => setPage(page - 1)}
-                    leftIcon="arrow-back"
-                  >
-                    Previous
-                  </Button>
-                )}
-                {showNextButton && (
-                  <Button
-                    variant="ghost"
-                    isDisabled={isLoading}
-                    onClick={() => setPage(page + 1)}
-                    rightIcon="arrow-forward"
-                  >
-                    Next
-                  </Button>
-                )}
-              </Stack>
+            <Flex
+              sx={{ mt: 3, justifyContent: "center", flexDirection: "row" }}
+            >
+              {showPreviousButton && (
+                <Button
+                  mx="2"
+                  variant="ghost"
+                  disabled={isLoading}
+                  onClick={() => setPage(page - 1)}
+                >
+                  Previous
+                </Button>
+              )}
+              {showNextButton && (
+                <Button
+                  mx="3"
+                  variant="ghost"
+                  disabled={isLoading}
+                  onClick={() => setPage(page + 1)}
+                >
+                  Next
+                </Button>
+              )}
             </Flex>
           )}
         </React.Fragment>
       ) : (
-        <Flex alignItems="center" justifyContent="center" flex="1">
+        <Flex
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            flex: "1"
+          }}
+        >
           {isLoading ? <Spinner /> : error && <Text>An error occurred.</Text>}
         </Flex>
       )}

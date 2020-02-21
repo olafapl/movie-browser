@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import { Flex } from "@chakra-ui/core";
+import { Container } from "theme-ui";
 import useSearchResults from "features/search/useSearchResults";
 import MovieGrid from "features/movies/MovieGrid";
 
-const SearchResults: React.FC = () => {
+const SearchResults = () => {
   const [
     movies,
     page,
@@ -24,7 +24,7 @@ const SearchResults: React.FC = () => {
   );
 
   return (
-    <Flex flexDirection="column" py="8" px="4" flex="1">
+    <Container sx={{ flex: "1" }}>
       <MovieGrid
         movies={movies}
         page={page}
@@ -34,7 +34,7 @@ const SearchResults: React.FC = () => {
         isLoading={!!isFetching}
         error={error}
       />
-    </Flex>
+    </Container>
   );
 };
 
