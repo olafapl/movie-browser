@@ -24,8 +24,7 @@ A React application for browsing movies.
 - [Redux Toolkit](https://redux-toolkit.js.org/), [Redux
   Persist](https://github.com/rt2zz/redux-persist/), [Redux
   Thunk](https://github.com/reduxjs/redux-thunk/), and [React Redux](https://react-redux.js.org/) &mdash; State management
-- [Chakra UI](https://chakra-ui.com/) (with [Emotion](https://emotion.sh/) and [Styled
-  System](https://styled-system.com/)) &mdash; UI components / styling
+- [Theme UI](https://theme-ui.com/) &mdash; UI components / styling
 - Quite a few other technologies
 
 ## License

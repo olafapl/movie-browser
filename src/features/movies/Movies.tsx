@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
-import { Heading, Stack } from "@chakra-ui/core";
+/** @jsx jsx */
+import { jsx, Text, Container } from "theme-ui";
 import useMovies from "features/movies/useMovies";
 import MovieGrid from "features/movies/MovieGrid";
 import useQueryParam from "hooks/useQueryParam";
@@ -9,7 +10,7 @@ interface MoviesProps {
   endpoint: string;
 }
 
-const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
+const Movies = ({ title, endpoint }: MoviesProps) => {
   const [pageQueryParam, setPageQueryParam] = useQueryParam("page");
   const [movies, page, setPage, totalPages, isFetching, error] = useMovies(
     endpoint
@@ -38,8 +39,10 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
   );
 
   return (
-    <Stack spacing="4" py="8" px="4" flex="1">
-      <Heading as="h1">{title}</Heading>
+    <Container sx={{ flex: "1" }}>
+      <Text as="h1" sx={{ variant: "text.heading", mb: 4 }}>
+        {title}
+      </Text>
       <MovieGrid
         movies={movies}
         page={page}
@@ -49,7 +52,7 @@ const Movies: React.FC<MoviesProps> = ({ title, endpoint }) => {
         isLoading={!!isFetching}
         error={error}
       />
-    </Stack>
+    </Container>
   );
 };
 

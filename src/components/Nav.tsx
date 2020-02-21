@@ -1,24 +1,10 @@
-import React from "react";
-import {
-  Flex,
-  Link,
-  Stack,
-  Button,
-  InputGroup,
-  Input,
-  InputLeftElement,
-  Icon,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerHeader,
-  DrawerFooter,
-  DrawerOverlay,
-  useDisclosure
-} from "@chakra-ui/core";
-import { Link as BrowserLink, useHistory } from "react-router-dom";
-import useSearchQuery from "features/search/useSearchQuery";
+import React, { useState, useRef } from "react";
+/** @jsx jsx */
+import { jsx, Flex, MenuButton, Container, Box, NavLink } from "theme-ui";
+import { Link as BrowserLink } from "react-router-dom";
+import SearchBar from "features/search/SearchBar";
+import useOnClickOutside from "hooks/useOnClickOutside";
+import Drawer from "components/Drawer";
 
 const routes = [
   { title: "Popular", path: "/movies/popular" },
@@ -27,82 +13,58 @@ const routes = [
 ];
 
 const Nav = () => {
-  const [query, setQuery] = useSearchQuery();
-  const history = useHistory();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const redirectoToSearch = () => {
-    if (history.location.pathname !== "/search") {
-      history.push({ pathname: "/search" });
-    }
-  };
-  const onInputChange = (event: React.FormEvent) => {
-    redirectoToSearch();
-    setQuery((event.target as HTMLInputElement).value);
-  };
-  const onInputKeyUp = (event: React.KeyboardEvent) => {
-    if (event.keyCode === 13) {
-      redirectoToSearch();
-    }
-  };
+  const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(() => setDrawerIsOpen(false), [drawerRef]);
   return (
-    <>
-      <Flex
-        p="4"
-        justifyContent="space-between"
-        alignItems="center"
-        boxShadow="lg"
-        bg="gray.900"
+    <React.Fragment>
+      <Box as="nav">
+        <Container>
+          <Flex
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
+            <SearchBar
+              sx={{
+                mr: 3,
+                flex: "1"
+              }}
+            />
+            <MenuButton onClick={() => setDrawerIsOpen(true)}>Menu</MenuButton>
+          </Flex>
+        </Container>
+      </Box>
+      <Drawer
+        drawerRef={drawerRef}
+        isOpen={drawerIsOpen}
+        setIsOpen={setDrawerIsOpen}
       >
-        <InputGroup flex="1" mr="4">
-          <Input
-            variant="outline"
-            borderRadius="full"
-            pl="10"
-            placeholder="Search ..."
-            value={query}
-            onChange={onInputChange}
-            onKeyUp={onInputKeyUp}
-          />
-          <InputLeftElement p="">
-            <Icon name="search" color="gray.500" />
-          </InputLeftElement>
-        </InputGroup>
-        <Button variant="ghost" size="sm" onClick={onOpen}>
-          Menu
-        </Button>
-      </Flex>
-
-      <Drawer isOpen={isOpen} placement="right" size="xs" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Menu</DrawerHeader>
-          <DrawerBody>
-            <Stack spacing="4">
-              {routes.map(({ title, path }) => (
-                <Link
-                  // @ts-ignore
-                  as={BrowserLink}
-                  to={path}
-                  key={`${title}${path}`}
-                >
-                  {title}
-                </Link>
-              ))}
-            </Stack>
-          </DrawerBody>
-          <DrawerFooter justifyContent="flex-start">
-            <Link
-              // @ts-ignore
+        <Flex sx={{ flexDirection: "column", flex: "1", py: 3 }}>
+          {routes.map(({ title, path }) => (
+            <NavLink
               as={BrowserLink}
-              to="/about"
+              // @ts-ignore
+              to={path}
+              key={`${title}${path}`}
+              onClick={() => setDrawerIsOpen(false)}
             >
-              About
-            </Link>
-          </DrawerFooter>
-        </DrawerContent>
+              {title}
+            </NavLink>
+          ))}
+          <NavLink
+            as={BrowserLink}
+            // @ts-ignore
+            to="/about"
+            sx={{ mt: "auto" }}
+            onClick={() => setDrawerIsOpen(false)}
+          >
+            About
+          </NavLink>
+        </Flex>
       </Drawer>
-    </>
+    </React.Fragment>
   );
 };
 
