@@ -1,6 +1,6 @@
 interface Arg {
   key: string;
-  value?: string;
+  value?: string | string[];
 }
 
 export const getEndpoint = <T>(endpoint: string, args?: Arg[]): Promise<T> => {
@@ -8,8 +8,13 @@ export const getEndpoint = <T>(endpoint: string, args?: Arg[]): Promise<T> => {
     ? args
         .map(
           ({ key, value }) =>
-            `&${key}` +
-            (value !== undefined ? `=${encodeURIComponent(value)}` : "")
+            `&${key}${
+              value !== undefined
+                ? `=${encodeURIComponent(
+                    typeof value === "string" ? value : value.join(",")
+                  )}`
+                : ""
+            }`
         )
         .join("")
     : "";
