@@ -10,7 +10,7 @@
     "date-fns": "^2.9.0",
     "framer-motion": "^1.8.4",
     "lodash.debounce": "^4.0.8",
-    "query-string": "^6.10.1",
+    "query-string": "^6.11.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
