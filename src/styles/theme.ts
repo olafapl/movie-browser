@@ -90,6 +90,15 @@ const theme = merge(baseTheme, {
     nav: {
       px: 3,
       py: 2
+    },
+    logo: {
+      color: "text",
+      textDecoration: "none",
+      fontSize: 3,
+      fontWeight: "bold",
+      ":hover, :focus": {
+        textDecoration: "underline"
+      }
     }
   }
 });

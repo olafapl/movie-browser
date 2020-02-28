@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 /** @jsx jsx */
-import { jsx, Flex, MenuButton, Container, Box, NavLink } from "theme-ui";
-import { Link as BrowserLink } from "react-router-dom";
+import { jsx, Flex, MenuButton, Container, Box, NavLink, Link } from "theme-ui";
+import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "features/search/SearchBar";
 import useOnClickOutside from "hooks/useOnClickOutside";
 import Drawer from "components/Drawer";
@@ -22,10 +22,20 @@ const Nav = () => {
         <Container>
           <Flex
             sx={{
-              justifyContent: "space-between",
               alignItems: "center"
             }}
           >
+            <Link
+              as={RouterLink}
+              // @ts-ignore
+              to="/"
+              variant="logo"
+              sx={{
+                mr: 3
+              }}
+            >
+              MB
+            </Link>
             <SearchBar
               sx={{
                 mr: 3,
@@ -44,7 +54,7 @@ const Nav = () => {
         <Flex sx={{ flexDirection: "column", flex: "1", py: 3 }}>
           {routes.map(({ title, path }) => (
             <NavLink
-              as={BrowserLink}
+              as={RouterLink}
               // @ts-ignore
               to={path}
               key={`${title}${path}`}
@@ -54,7 +64,7 @@ const Nav = () => {
             </NavLink>
           ))}
           <NavLink
-            as={BrowserLink}
+            as={RouterLink}
             // @ts-ignore
             to="/about"
             sx={{ mt: "auto" }}
