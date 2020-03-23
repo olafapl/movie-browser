@@ -13,6 +13,12 @@ const colors = {
 
 const theme = merge(baseTheme, {
   colors,
+  fonts: {
+    body:
+      "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+    heading: "inherit",
+    monospace: "monospace"
+  },
   radii: [0, 4, 999999],
   text: {
     heading: {
@@ -97,7 +103,7 @@ const theme = merge(baseTheme, {
       fontSize: 3,
       fontWeight: "bold",
       ":hover, :focus": {
-        textDecoration: "underline"
+        color: "primary"
       }
     }
   }
