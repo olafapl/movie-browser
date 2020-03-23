@@ -53,9 +53,15 @@ const Drawer = ({ isOpen, setIsOpen, children, drawerRef }: DrawerProps) => {
           display: "flex",
           flexDirection: "column",
           position: "fixed",
+          top: [3, 4],
           right: 0,
-          top: 0,
-          minHeight: "100vh",
+          bottom: [3, 4],
+          borderTopLeftRadius: 1,
+          borderBottomLeftRadius: 1,
+          minHeight: theme => [
+            `calc(100vh - ${2 * theme.space[3]})`,
+            `calc(100vh - ${2 * theme.space[4]})`
+          ],
           width: "25rem",
           maxWidth: "67vw",
           backgroundColor: "muted",
