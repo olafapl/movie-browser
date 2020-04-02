@@ -14,7 +14,7 @@ const useQueryParam = (
         search: queryString.stringify({ ...parsedQueryString, [key]: value })
       });
     },
-    [location, history, key]
+    [location.search, history, key]
   );
   return [queryString.parse(location.search)[key] ?? null, setValue];
 };
