@@ -1,25 +1,19 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 import { useDebounce } from "use-lodash-debounce";
-import { fetchResults, setQuery as setQ } from "features/search/searchSlice";
-import useSelector from "hooks/useSelector";
+import { useLocation } from "react-router-dom";
+import useQueryParam from "hooks/useQueryParam";
 
 const useSearchQuery = (): [string, (query: string) => void] => {
-  const { query, page } = useSelector(state => state.search);
-  const dispatch = useDispatch();
-  const setQuery = useCallback(
-    (query: string) => {
-      dispatch(setQ(query));
-    },
-    [dispatch]
-  );
-
+  const location = useLocation();
+  const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
+  const [queryParam, setQueryParam] = useQueryParam("query");
+
   useEffect(() => {
-    if (debouncedQuery) {
-      dispatch(fetchResults());
+    if (location.pathname === "/search") {
+      setQueryParam(debouncedQuery);
     }
-  }, [debouncedQuery, page, dispatch]);
+  }, [debouncedQuery, setQueryParam, location.pathname]);
 
   return [query, setQuery];
 };

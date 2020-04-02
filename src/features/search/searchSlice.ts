@@ -3,18 +3,17 @@ import { AppThunk } from "store";
 import { searchMovies } from "api/tmdb";
 
 interface SearchState {
-  results: Tmdb.MovieResult[] | null;
-  query: string;
-  page: number;
+  pages: {
+    // pageNumber: results
+    [key: number]: Tmdb.MovieResult[];
+  };
   totalPages: number | null;
   isFetching: boolean;
   error: string | null;
 }
 
 const initialState: SearchState = {
-  results: null,
-  query: "",
-  page: 1,
+  pages: {},
   totalPages: null,
   isFetching: false,
   error: null
@@ -28,8 +27,8 @@ const searchSlice = createSlice({
       state,
       action: PayloadAction<Tmdb.PaginatedResults<Tmdb.MovieResult>>
     ) {
-      const { results, total_pages } = action.payload;
-      state.results = results;
+      const { results, total_pages, page } = action.payload;
+      state.pages[page] = results;
       state.totalPages = total_pages;
     },
     getResultsFailed(state, action: PayloadAction<string>) {
@@ -38,14 +37,11 @@ const searchSlice = createSlice({
     setIsFetching(state, action: PayloadAction<boolean>) {
       state.isFetching = action.payload;
     },
-    setQuery(state, action: PayloadAction<string>) {
-      state.query = action.payload;
-      state.totalPages = null;
-      state.results = null;
-      state.page = 1;
-    },
-    setPage(state, action: PayloadAction<number>) {
-      state.page = action.payload;
+    dropResults(state) {
+      state.pages = initialState.pages;
+      state.totalPages = initialState.totalPages;
+      state.isFetching = initialState.isFetching;
+      state.error = initialState.error;
     }
   }
 });
@@ -54,12 +50,13 @@ export const {
   getResultsSuccess,
   getResultsFailed,
   setIsFetching,
-  setQuery,
-  setPage
+  dropResults
 } = searchSlice.actions;
 
-export const fetchResults = (): AppThunk => async (dispatch, getState) => {
-  const { query, page } = getState().search;
+export const fetchResults = (
+  query: string,
+  page: number
+): AppThunk => async dispatch => {
   try {
     dispatch(setIsFetching(true));
     const results = await searchMovies(query, page);

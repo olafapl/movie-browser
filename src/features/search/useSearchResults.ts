@@ -1,11 +1,9 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setPage as setP } from "features/search/searchSlice";
+import { fetchResults, dropResults } from "features/search/searchSlice";
 import useSelector from "hooks/useSelector";
+import useQueryParam from "hooks/useQueryParam";
 
-/**
- * @param endpoint TMDB API endpoint to fetch movies from.
- */
 const useSearchResults = (): [
   Tmdb.MovieResult[] | null,
   number,
@@ -14,19 +12,36 @@ const useSearchResults = (): [
   boolean,
   string | null
 ] => {
-  const { results, page, totalPages, error, isFetching } = useSelector(
+  const { pages, totalPages, error, isFetching } = useSelector(
     state => state.search
   );
   const dispatch = useDispatch();
+  const [queryParam] = useQueryParam("query");
+  const query = (queryParam as string) ?? "";
+  const [pageParam, setPageParam] = useQueryParam("page");
+  const page = Number.parseInt(pageParam as string) || 1;
+
   const setPage = useCallback(
     (page: number) => {
-      dispatch(setP(page));
+      setPageParam(page.toString());
     },
-    [dispatch]
+    [setPageParam]
   );
 
+  useEffect(() => {
+    setPage(1);
+  }, [query, setPage]);
+
+  useEffect(() => {
+    if (query) {
+      dispatch(fetchResults(query, page));
+    } else {
+      dispatch(dropResults());
+    }
+  }, [query, page, dispatch]);
+
   return [
-    results ?? null,
+    pages[page] ?? null,
     page,
     setPage,
     totalPages ?? null,
