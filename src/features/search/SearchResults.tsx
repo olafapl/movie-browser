@@ -1,34 +1,27 @@
-import React, { useCallback } from "react";
-import { Container } from "theme-ui";
-import useSearchResults from "features/search/useSearchResults";
+import React, { useContext } from "react";
+import { Container, Text } from "theme-ui";
 import MovieGrid from "features/movies/MovieGrid";
+import SearchContext from "features/search/SearchContext";
 
 const SearchResults = () => {
-  const [
+  const {
     movies,
+    query,
     page,
     setPage,
     totalPages,
     isFetching,
-    error
-  ] = useSearchResults();
-
-  const goToPage = useCallback(
-    (page: number) => {
-      if (page > 0 && totalPages && page <= totalPages) {
-        setPage(page);
-        window.scrollTo(0, 0);
-      }
-    },
-    [setPage, totalPages]
-  );
-
+    error,
+  } = useContext(SearchContext);
   return (
     <Container sx={{ flex: "1" }}>
+      <Text as="h1" sx={{ variant: "text.heading", mb: 4 }}>
+        Results for "{query}"
+      </Text>
       <MovieGrid
         movies={movies}
         page={page}
-        setPage={goToPage}
+        setPage={setPage}
         showPreviousButton={page > 1}
         showNextButton={totalPages !== null && page < totalPages}
         isLoading={!!isFetching}
