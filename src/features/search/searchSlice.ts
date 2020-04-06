@@ -1,73 +1,80 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppThunk } from "store";
 import { searchMovies } from "api/tmdb";
 
-interface FetchArgs {
+interface SearchState {
+  results: Tmdb.MovieResult[] | null;
   query: string;
   page: number;
-}
-
-export const fetchResults = createAsyncThunk(
-  "search/fetchResults",
-  async ({ query, page }: FetchArgs, thunkAPI) => {
-    const response = await searchMovies(query, page);
-    if ("results" in response) {
-      return response;
-    } else {
-      return thunkAPI.rejectWithValue(
-        `${response.status_code}: ${response.status_message}`
-      );
-    }
-  }
-);
-
-interface SearchResults {
-  pages: {
-    [key: number]: Tmdb.MovieResult[];
-  };
   totalPages: number | null;
-}
-
-interface SearchState {
-  queries: {
-    [key: string]: SearchResults;
-  };
   isFetching: boolean;
   error: string | null;
 }
 
 const initialState: SearchState = {
-  queries: {},
+  results: null,
+  query: "",
+  page: 1,
+  totalPages: null,
   isFetching: false,
-  error: null,
+  error: null
 };
 
 const searchSlice = createSlice({
   name: "search",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchResults.pending, (state, action) => {
-      state.isFetching = true;
-    });
-    builder.addCase(fetchResults.fulfilled, (state, action) => {
-      const response = action.payload;
-      const { query, page } = action.meta.arg;
-      const { results, total_pages } = response;
-      if (!(query in state.queries)) {
-        state.queries[query] = {
-          pages: {},
-          totalPages: null,
-        };
-      }
-      state.queries[query].pages[page] = results;
-      state.queries[query].totalPages = total_pages;
-      state.isFetching = false;
-      state.error = null;
-    });
-    builder.addCase(fetchResults.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload as string;
-    });
-  },
+  reducers: {
+    getResultsSuccess(
+      state,
+      action: PayloadAction<Tmdb.PaginatedResults<Tmdb.MovieResult>>
+    ) {
+      const { results, total_pages } = action.payload;
+      state.results = results;
+      state.totalPages = total_pages;
+    },
+    getResultsFailed(state, action: PayloadAction<string>) {
+      state.error = action.payload;
+    },
+    setIsFetching(state, action: PayloadAction<boolean>) {
+      state.isFetching = action.payload;
+    },
+    setQuery(state, action: PayloadAction<string>) {
+      state.query = action.payload;
+      state.totalPages = null;
+      state.results = null;
+      state.page = 1;
+    },
+    setPage(state, action: PayloadAction<number>) {
+      state.page = action.payload;
+    }
+  }
 });
+
+export const {
+  getResultsSuccess,
+  getResultsFailed,
+  setIsFetching,
+  setQuery,
+  setPage
+} = searchSlice.actions;
+
+export const fetchResults = (): AppThunk => async (dispatch, getState) => {
+  const { query, page } = getState().search;
+  try {
+    dispatch(setIsFetching(true));
+    const results = await searchMovies(query, page);
+    if ("results" in results) {
+      dispatch(getResultsSuccess(results));
+    } else {
+      dispatch(
+        getResultsFailed(`${results.status_code}: ${results.status_message}`)
+      );
+    }
+  } catch (err) {
+    dispatch(getResultsFailed(err.toString()));
+  } finally {
+    dispatch(setIsFetching(false));
+  }
+};
+
 export default searchSlice.reducer;

@@ -1,6 +1,5 @@
-import { useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useQueryParam, NumberParam } from "use-query-params";
 import { fetchMovies } from "features/movies/moviesSlice";
 import useSelector from "hooks/useSelector";
 
@@ -17,32 +16,22 @@ const useMovies = (
   boolean | null,
   string | null
 ] => {
-  const { endpoints, error, isFetching } = useSelector((state) => state.movies);
+  const [page, setPage] = useState(1);
+  const results = useSelector(state => state.movies[endpoint]);
   const dispatch = useDispatch();
-  const [pageParam, setPageParam] = useQueryParam("page", NumberParam);
-  const page = pageParam ?? 1;
-  const setPage = useCallback(
-    (page: number) => {
-      setPageParam(page, "pushIn");
-    },
-    [setPageParam]
-  );
 
   useEffect(() => {
-    const pages = endpoints[endpoint]?.pages ?? {};
-    if (endpoint && !(page in pages)) {
-      dispatch(fetchMovies({ endpoint, page }));
+    if (endpoint) {
+      dispatch(fetchMovies(endpoint, page));
     }
-  }, [endpoint, page, endpoints, dispatch]);
+  }, [endpoint, page, dispatch]);
 
-  return [
-    endpoints?.[endpoint]?.pages[page] ?? null,
-    page,
-    setPage,
-    endpoints?.[endpoint]?.totalPages,
-    isFetching,
-    error,
-  ];
+  if (results) {
+    const { pages, isFetching, totalPages, error } = results;
+    return [pages[page] ?? [], page, setPage, totalPages, isFetching, error];
+  } else {
+    return [null, page, setPage, null, null, null];
+  }
 };
 
 export default useMovies;
