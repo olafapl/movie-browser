@@ -1,6 +1,12 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk } from "store";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getConfig } from "api/tmdb";
+
+export const fetchConfig = createAsyncThunk(
+  "tmdbConfig/fetchConfig",
+  async (arg, thunkApi) => {
+    return await getConfig();
+  }
+);
 
 interface TmdbConfigState {
   config: Tmdb.Config | null;
@@ -13,43 +19,27 @@ const initialState: TmdbConfigState = {
   config: null,
   isFetching: false,
   error: null,
-  fetchDate: null
+  fetchDate: null,
 };
 
 const tmdbConfigSlice = createSlice({
   name: "tmdbConfig",
   initialState,
-  reducers: {
-    getConfigSuccess(state, action: PayloadAction<Tmdb.Config>) {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchConfig.pending, (state, action) => {
+      state.isFetching = true;
+    });
+    builder.addCase(fetchConfig.fulfilled, (state, action) => {
       state.config = action.payload;
+      state.isFetching = false;
       state.error = null;
       state.fetchDate = new Date().getTime();
-    },
-    getConfigFailed(state, action: PayloadAction<string>) {
-      state.error = action.payload;
-    },
-    isFetching(state, action: PayloadAction<boolean>) {
-      state.isFetching = action.payload;
-    }
-  }
+    });
+    builder.addCase(fetchConfig.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+  },
 });
-
-export const {
-  getConfigSuccess,
-  getConfigFailed,
-  isFetching
-} = tmdbConfigSlice.actions;
-
-export const fetchConfig = (): AppThunk => async dispatch => {
-  try {
-    dispatch(isFetching(true));
-    const config = await getConfig();
-    dispatch(getConfigSuccess(config));
-  } catch (err) {
-    dispatch(getConfigFailed(err.toString()));
-  } finally {
-    dispatch(isFetching(false));
-  }
-};
 
 export default tmdbConfigSlice.reducer;
