@@ -2,7 +2,7 @@ import {
   configureStore,
   combineReducers,
   Action,
-  getDefaultMiddleware
+  getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import thunk, { ThunkAction } from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
@@ -16,19 +16,25 @@ export const rootReducer = combineReducers({
   tmdbConfig: persistReducer(
     {
       key: "tmdbConfig",
-      storage
+      storage,
     },
     tmdbConfigReducer
   ),
   movies: moviesReducer,
-  movie: movieReducer,
-  search: searchReducer
+  movie: persistReducer(
+    {
+      key: "movie",
+      storage,
+    },
+    movieReducer
+  ),
+  search: searchReducer,
 });
 export type RootState = ReturnType<typeof rootReducer>;
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [...getDefaultMiddleware({ serializableCheck: false }), thunk] // Serializible state check does not pass with redux-persist
+  middleware: [...getDefaultMiddleware({ serializableCheck: false }), thunk], // Serializible state check does not pass with redux-persist
 });
 
 export const persistor = persistStore(store);
