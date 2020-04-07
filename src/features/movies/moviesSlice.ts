@@ -22,7 +22,11 @@ export const fetchMovies = createAsyncThunk(
 
 interface MoviesResults {
   pages: {
-    [key: number]: Tmdb.MovieResult[];
+    [key: number]: {
+      data: Tmdb.MovieResult[] | null;
+      isFetching: boolean;
+      error: string | null;
+    };
   };
   totalPages: number | null;
 }
@@ -31,14 +35,10 @@ interface MoviesState {
   endpoints: {
     [key: string]: MoviesResults;
   };
-  isFetching: boolean;
-  error: string | null;
 }
 
 const initialState: MoviesState = {
   endpoints: {},
-  isFetching: false,
-  error: null,
 };
 
 const moviesSlice = createSlice({
@@ -47,23 +47,33 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.pending, (state, action) => {
-      state.isFetching = true;
+      const { endpoint, page } = action.meta.arg;
+      if (!(endpoint in state.endpoints)) {
+        state.endpoints[endpoint] = {
+          pages: {},
+          totalPages: null,
+        };
+      }
+      state.endpoints[endpoint].pages[page] = {
+        data: null,
+        isFetching: true,
+        error: null,
+      };
     });
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
-      const response = action.payload;
+      const { results, total_pages } = action.payload;
       const { endpoint, page } = action.meta.arg;
-      const { results, total_pages } = response;
-      if (!(endpoint in state.endpoints)) {
-        state.endpoints[endpoint] = { pages: {}, totalPages: null };
-      }
-      state.endpoints[endpoint].pages[page] = results;
+      state.endpoints[endpoint].pages[page] = {
+        data: results,
+        isFetching: false,
+        error: null,
+      };
       state.endpoints[endpoint].totalPages = total_pages;
-      state.isFetching = false;
-      state.error = null;
     });
     builder.addCase(fetchMovies.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload as string;
+      const { endpoint, page } = action.meta.arg;
+      state.endpoints[endpoint].pages[page].isFetching = false;
+      state.endpoints[endpoint].pages[page].error = action.payload as string;
     });
   },
 });

@@ -22,7 +22,11 @@ export const fetchResults = createAsyncThunk(
 
 interface SearchResults {
   pages: {
-    [key: number]: Tmdb.MovieResult[];
+    [key: number]: {
+      data: Tmdb.MovieResult[] | null;
+      isFetching: boolean;
+      error: string | null;
+    };
   };
   totalPages: number | null;
 }
@@ -31,14 +35,10 @@ interface SearchState {
   queries: {
     [key: string]: SearchResults;
   };
-  isFetching: boolean;
-  error: string | null;
 }
 
 const initialState: SearchState = {
   queries: {},
-  isFetching: false,
-  error: null,
 };
 
 const searchSlice = createSlice({
@@ -47,26 +47,33 @@ const searchSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchResults.pending, (state, action) => {
-      state.isFetching = true;
-    });
-    builder.addCase(fetchResults.fulfilled, (state, action) => {
-      const response = action.payload;
       const { query, page } = action.meta.arg;
-      const { results, total_pages } = response;
       if (!(query in state.queries)) {
         state.queries[query] = {
           pages: {},
           totalPages: null,
         };
       }
-      state.queries[query].pages[page] = results;
+      state.queries[query].pages[page] = {
+        data: null,
+        isFetching: true,
+        error: null,
+      };
+    });
+    builder.addCase(fetchResults.fulfilled, (state, action) => {
+      const { results, total_pages } = action.payload;
+      const { query, page } = action.meta.arg;
+      state.queries[query].pages[page] = {
+        data: results,
+        isFetching: false,
+        error: null,
+      };
       state.queries[query].totalPages = total_pages;
-      state.isFetching = false;
-      state.error = null;
     });
     builder.addCase(fetchResults.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload as string;
+      const { query, page } = action.meta.arg;
+      state.queries[query].pages[page].isFetching = false;
+      state.queries[query].pages[page].error = action.payload as string;
     });
   },
 });

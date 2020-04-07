@@ -17,7 +17,7 @@ const useMovies = (
   boolean | null,
   string | null
 ] => {
-  const { endpoints, error, isFetching } = useSelector((state) => state.movies);
+  const endpoints = useSelector((state) => state.movies.endpoints);
   const dispatch = useDispatch();
   const [pageParam, setPageParam] = useQueryParam("page", NumberParam);
   const page = pageParam ?? 1;
@@ -29,19 +29,24 @@ const useMovies = (
   );
 
   useEffect(() => {
-    const pages = endpoints[endpoint]?.pages ?? {};
-    if (endpoint && !(page in pages)) {
+    const pages = endpoints[endpoint]?.pages;
+    if (
+      endpoint &&
+      (!pages ||
+        !(page in pages) ||
+        (!pages[page].isFetching && !pages[page].data))
+    ) {
       dispatch(fetchMovies({ endpoint, page }));
     }
   }, [endpoint, page, endpoints, dispatch]);
 
   return [
-    endpoints?.[endpoint]?.pages[page] ?? null,
+    endpoints?.[endpoint]?.pages[page]?.data ?? null,
     page,
     setPage,
     endpoints?.[endpoint]?.totalPages,
-    isFetching,
-    error,
+    endpoints?.[endpoint]?.pages[page]?.isFetching ?? null,
+    endpoints?.[endpoint]?.pages[page]?.error ?? null,
   ];
 };
 

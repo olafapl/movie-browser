@@ -11,10 +11,10 @@ const useSearch = (): [
   number,
   (page: number) => void,
   number | null,
-  boolean,
+  boolean | null,
   string | null
 ] => {
-  const { queries, error, isFetching } = useSelector((state) => state.search);
+  const queries = useSelector((state) => state.search.queries);
   const dispatch = useDispatch();
   const [queryParams, setQueryParams] = useQueryParams({
     query: StringParam,
@@ -36,21 +36,26 @@ const useSearch = (): [
   );
 
   useEffect(() => {
-    const pages = queries[query]?.pages ?? {};
-    if (query && !(page in pages)) {
-      dispatch(fetchResults({ query: query, page }));
+    const pages = queries[query]?.pages;
+    if (
+      query &&
+      (!pages ||
+        !(page in pages) ||
+        (!pages[page].isFetching && !pages[page].data))
+    ) {
+      dispatch(fetchResults({ query, page }));
     }
   }, [query, page, queries, dispatch]);
 
   return [
-    queries?.[query]?.pages[page] ?? null,
+    queries?.[query]?.pages[page]?.data ?? null,
     query,
     setQuery,
     page,
     setPage,
     queries?.[query]?.totalPages ?? null,
-    isFetching,
-    error,
+    queries?.[query]?.pages[page]?.isFetching ?? null,
+    queries?.[query]?.pages[page]?.error ?? null,
   ];
 };
 

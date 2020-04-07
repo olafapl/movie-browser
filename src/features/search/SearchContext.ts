@@ -7,7 +7,7 @@ interface SearchContextState {
   page: number;
   setPage: (page: number) => void;
   totalPages: number | null;
-  isFetching: boolean;
+  isFetching: boolean | null;
   error: string | null;
 }
 
