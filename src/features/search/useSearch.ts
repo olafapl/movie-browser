@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQueryParams, StringParam, NumberParam } from "use-query-params";
 import { fetchResults } from "features/search/searchSlice";
@@ -14,8 +14,7 @@ const useSearch = (): [
   boolean | null,
   string | null
 ] => {
-  const queries = useSelector((state) => state.search.queries);
-  const dispatch = useDispatch();
+  const [argDate, setArgDate] = useState(new Date().getTime());
   const [queryParams, setQueryParams] = useQueryParams({
     query: StringParam,
     page: NumberParam,
@@ -34,28 +33,34 @@ const useSearch = (): [
     },
     [setQueryParams]
   );
+  const queryState = useSelector((state) => state.search.queries[query]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const pages = queries[query]?.pages;
+    setArgDate(new Date().getTime());
+  }, [query, page]);
+
+  useEffect(() => {
+    const pages = queryState?.pages;
     if (
       query &&
-      (!pages ||
-        !(page in pages) ||
-        (!pages[page].isFetching && !pages[page].data))
+      !pages?.[page]?.isFetching &&
+      !pages?.[page]?.data &&
+      (!pages?.[page]?.fetchDate || pages[page].fetchDate! < argDate)
     ) {
       dispatch(fetchResults({ query, page }));
     }
-  }, [query, page, queries, dispatch]);
+  }, [query, page, argDate, queryState, dispatch]);
 
   return [
-    queries?.[query]?.pages[page]?.data ?? null,
+    queryState?.pages[page]?.data ?? null,
     query,
     setQuery,
     page,
     setPage,
-    queries?.[query]?.totalPages ?? null,
-    queries?.[query]?.pages[page]?.isFetching ?? null,
-    queries?.[query]?.pages[page]?.error ?? null,
+    queryState?.totalPages ?? null,
+    queryState?.pages[page]?.isFetching ?? null,
+    queryState?.pages[page]?.error ?? null,
   ];
 };
 

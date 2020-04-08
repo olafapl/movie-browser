@@ -9,13 +9,17 @@ interface FetchArgs {
 export const fetchMovies = createAsyncThunk(
   "movies/fetchMovies",
   async ({ endpoint, page }: FetchArgs, thunkAPI) => {
-    const response = await getMovies(endpoint, page);
-    if ("results" in response) {
-      return response;
-    } else {
-      return thunkAPI.rejectWithValue(
-        `${response.status_code}: ${response.status_message}`
-      );
+    try {
+      const response = await getMovies(endpoint, page);
+      if ("results" in response) {
+        return response;
+      } else {
+        return thunkAPI.rejectWithValue(
+          `${response.status_code}: ${response.status_message}`
+        );
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.toString());
     }
   }
 );
@@ -26,6 +30,7 @@ interface MoviesResults {
       data: Tmdb.MovieResult[] | null;
       isFetching: boolean;
       error: string | null;
+      fetchDate: number | null;
     };
   };
   totalPages: number | null;
@@ -58,6 +63,7 @@ const moviesSlice = createSlice({
         data: null,
         isFetching: true,
         error: null,
+        fetchDate: null,
       };
     });
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
@@ -67,6 +73,7 @@ const moviesSlice = createSlice({
         data: results,
         isFetching: false,
         error: null,
+        fetchDate: new Date().getTime(),
       };
       state.endpoints[endpoint].totalPages = total_pages;
     });
@@ -74,6 +81,7 @@ const moviesSlice = createSlice({
       const { endpoint, page } = action.meta.arg;
       state.endpoints[endpoint].pages[page].isFetching = false;
       state.endpoints[endpoint].pages[page].error = action.payload as string;
+      state.endpoints[endpoint].pages[page].fetchDate = new Date().getTime();
     });
   },
 });

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import addWeeks from "date-fns/esm/addWeeks";
 import { fetchMovie } from "features/movies/movieSlice";
@@ -10,26 +10,27 @@ import useSelector from "hooks/useSelector";
 const useMovie = (
   movieId: number
 ): [Tmdb.Movie | null, boolean, string | null] => {
-  const movieIds = useSelector((state) => state.movie.movieIds);
+  const [argDate, setArgDate] = useState(new Date().getTime());
+  const movie = useSelector((state) => state.movie.movieIds[movieId]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchDate = movieIds[movieId]?.fetchDate;
+    setArgDate(new Date().getTime());
+  }, [movieId]);
+
+  useEffect(() => {
     if (
-      !(movieId in movieIds) ||
-      (!movieIds[movieId].isFetching &&
-        (!movieIds[movieId].data ||
-          (fetchDate && addWeeks(new Date(fetchDate), 2) < new Date())))
+      !movie?.isFetching &&
+      (!movie?.data ||
+        (movie.fetchDate &&
+          addWeeks(new Date(movie.fetchDate), 2) < new Date())) &&
+      (!movie?.fetchDate || movie.fetchDate < argDate)
     ) {
       dispatch(fetchMovie(movieId));
     }
-  }, [movieId, movieIds, dispatch]);
+  }, [movieId, argDate, movie, dispatch]);
 
-  return [
-    movieIds[movieId]?.data ?? null,
-    movieIds[movieId]?.isFetching ?? null,
-    movieIds[movieId]?.error ?? null,
-  ];
+  return [movie?.data ?? null, movie?.isFetching ?? null, movie?.error ?? null];
 };
 
 export default useMovie;

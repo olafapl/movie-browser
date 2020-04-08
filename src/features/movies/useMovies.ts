@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQueryParam, NumberParam } from "use-query-params";
 import { fetchMovies } from "features/movies/moviesSlice";
@@ -17,7 +17,10 @@ const useMovies = (
   boolean | null,
   string | null
 ] => {
-  const endpoints = useSelector((state) => state.movies.endpoints);
+  const [argDate, setArgDate] = useState(new Date().getTime());
+  const endpointState = useSelector(
+    (state) => state.movies.endpoints[endpoint]
+  );
   const dispatch = useDispatch();
   const [pageParam, setPageParam] = useQueryParam("page", NumberParam);
   const page = pageParam ?? 1;
@@ -29,24 +32,28 @@ const useMovies = (
   );
 
   useEffect(() => {
-    const pages = endpoints[endpoint]?.pages;
+    setArgDate(new Date().getTime());
+  }, [endpoint, page]);
+
+  useEffect(() => {
+    const pages = endpointState?.pages;
     if (
       endpoint &&
-      (!pages ||
-        !(page in pages) ||
-        (!pages[page].isFetching && !pages[page].data))
+      !pages?.[page]?.isFetching &&
+      !pages?.[page]?.data &&
+      (!pages?.[page]?.fetchDate || pages[page].fetchDate! < argDate)
     ) {
       dispatch(fetchMovies({ endpoint, page }));
     }
-  }, [endpoint, page, endpoints, dispatch]);
+  }, [endpoint, page, argDate, endpointState, dispatch]);
 
   return [
-    endpoints?.[endpoint]?.pages[page]?.data ?? null,
+    endpointState?.pages[page]?.data ?? null,
     page,
     setPage,
-    endpoints?.[endpoint]?.totalPages,
-    endpoints?.[endpoint]?.pages[page]?.isFetching ?? null,
-    endpoints?.[endpoint]?.pages[page]?.error ?? null,
+    endpointState?.totalPages,
+    endpointState?.pages[page]?.isFetching ?? null,
+    endpointState?.pages[page]?.error ?? null,
   ];
 };
 

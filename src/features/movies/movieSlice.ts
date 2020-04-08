@@ -4,13 +4,17 @@ import { getMovie } from "api/tmdb";
 export const fetchMovie = createAsyncThunk(
   "movie/fetchMovie",
   async (movieId: number, thunkAPI) => {
-    const response = await getMovie(movieId);
-    if ("id" in response) {
-      return response;
-    } else {
-      return thunkAPI.rejectWithValue(
-        `${response.status_code}: ${response.status_message}`
-      );
+    try {
+      const response = await getMovie(movieId);
+      if ("id" in response) {
+        return response;
+      } else {
+        return thunkAPI.rejectWithValue(
+          `${response.status_code}: ${response.status_message}`
+        );
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.toString());
     }
   }
 );
@@ -58,6 +62,7 @@ const movieSlice = createSlice({
       const movieId = action.meta.arg;
       state.movieIds[movieId].isFetching = false;
       state.movieIds[movieId].error = action.payload as string;
+      state.movieIds[movieId].fetchDate = new Date().getTime();
     });
   },
 });
