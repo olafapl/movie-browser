@@ -9,7 +9,7 @@ import Drawer from "components/Drawer";
 const routes = [
   { title: "Popular", path: "/movies/popular" },
   { title: "Top rated", path: "/movies/top-rated" },
-  { title: "Trending", path: "/movies/trending" }
+  { title: "Trending", path: "/movies/trending" },
 ];
 
 const Nav = () => {
@@ -22,7 +22,7 @@ const Nav = () => {
         <Container>
           <Flex
             sx={{
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <Link
@@ -31,7 +31,7 @@ const Nav = () => {
               to="/"
               variant="logo"
               sx={{
-                mr: 3
+                mr: 3,
               }}
             >
               MB
@@ -39,7 +39,7 @@ const Nav = () => {
             <SearchBar
               sx={{
                 mr: 3,
-                flex: "1"
+                flex: "1",
               }}
             />
             <MenuButton onClick={() => setDrawerIsOpen(true)}>Menu</MenuButton>
@@ -47,6 +47,7 @@ const Nav = () => {
         </Container>
       </Box>
       <Drawer
+        title="Menu"
         drawerRef={drawerRef}
         isOpen={drawerIsOpen}
         setIsOpen={setDrawerIsOpen}

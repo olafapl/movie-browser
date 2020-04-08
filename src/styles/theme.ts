@@ -8,7 +8,7 @@ const colors = {
   background: "#000",
   primary: "#4392f1",
   secondary: "#a59bde",
-  muted: "#222"
+  muted: "#222",
 };
 
 const theme = merge(baseTheme, {
@@ -17,7 +17,7 @@ const theme = merge(baseTheme, {
     body:
       "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
     heading: "inherit",
-    monospace: "monospace"
+    monospace: "monospace",
   },
   radii: [0, 4, 999999],
   text: {
@@ -25,17 +25,17 @@ const theme = merge(baseTheme, {
       fontSize: 5,
       fontFamily: "heading",
       lineHeight: "heading",
-      fontWeight: "heading"
+      fontWeight: "heading",
     },
     truncated: {
       maxWidth: "100%",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      textOverflow: "ellipsis"
-    }
+      textOverflow: "ellipsis",
+    },
   },
   shadows: {
-    outline: `0 0 0 2px ${colors.primary} inset`
+    outline: `0 0 0 2px ${colors.primary} inset`,
   },
   buttons: {
     base: {
@@ -43,59 +43,60 @@ const theme = merge(baseTheme, {
       borderRadius: 1,
       cursor: "pointer",
       userSelect: "none",
-      transition: "background-color 0.2s ease, color 0.2s ease"
+      transition: "background-color 0.2s ease, color 0.2s ease",
     },
     primary: {
       variant: "buttons.base",
-      color: "primary"
+      color: "primary",
     },
     secondary: {
       variant: "buttons.base",
-      color: "secondary"
+      color: "secondary",
     },
     ghost: {
       variant: "buttons.base",
       color: "text",
       backgroundColor: "transparent",
       ":hover, :focus": {
-        backgroundColor: "muted"
-      }
+        backgroundColor: "muted",
+      },
     },
     menu: {
-      variant: "buttons.base"
+      variant: "buttons.base",
     },
     close: {
-      variant: "buttons.base"
-    }
+      variant: "buttons.base",
+    },
   },
   badges: {
     plain: {
       color: alpha("text", 0.75),
       backgroundColor: alpha("text", 0.15),
       borderRadius: 1,
-      textTransform: "uppercase"
-    }
+      textTransform: "uppercase",
+    },
   },
   forms: {
     input: {
       borderRadius: 1,
-      borderColor: "muted"
-    }
+      borderColor: "muted",
+    },
   },
   sizes: {
-    container: 1200
+    container: 1200,
   },
   layout: {
     container: {
       display: "flex",
       flexDirection: "column",
-      p: [3, 4]
-    }
+      p: [3, 4],
+    },
   },
   links: {
     nav: {
+      fontWeight: "normal",
       px: 3,
-      py: 2
+      py: 2,
     },
     logo: {
       color: "text",
@@ -103,10 +104,10 @@ const theme = merge(baseTheme, {
       fontSize: 3,
       fontWeight: "bold",
       ":hover, :focus": {
-        color: "primary"
-      }
-    }
-  }
+        color: "primary",
+      },
+    },
+  },
 });
 
 export default theme;
