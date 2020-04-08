@@ -5,12 +5,14 @@ import useSelector from "hooks/useSelector";
 
 const useTmdbConfig = (): [Tmdb.Config | null, boolean, string | null] => {
   const { config, isFetching, error, fetchDate } = useSelector(
-    state => state.tmdbConfig
+    (state) => state.tmdbConfig
   );
   const dispatch = useDispatch();
+
   if (
+    !config &&
     !isFetching &&
-    (!config || (fetchDate && addWeeks(new Date(fetchDate), 2) < new Date()))
+    (!fetchDate || addWeeks(new Date(fetchDate), 2) < new Date())
   ) {
     dispatch(fetchConfig());
   }

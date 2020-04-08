@@ -3,8 +3,12 @@ import { getConfig } from "api/tmdb";
 
 export const fetchConfig = createAsyncThunk(
   "tmdbConfig/fetchConfig",
-  async (arg, thunkApi) => {
-    return await getConfig();
+  async (arg, thunkAPI) => {
+    try {
+      return await getConfig();
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.toString());
+    }
   }
 );
 
