@@ -20,7 +20,7 @@ export const getEndpoint = <T>(endpoint: string, args?: Arg[]): Promise<T> => {
     : "";
   return fetch(
     `https://api.themoviedb.org/3/${endpoint}?api_key=${process.env.REACT_APP_TMDB_API_KEY}${queryString}`
-  ).then(result => result.json());
+  ).then((response) => response.json());
 };
 
 export const getConfig = () => {
@@ -38,7 +38,7 @@ export const getImageUrls = (
       : tmdbConfig.images.backdrop_sizes;
   const imageUrls: { [key: string]: string } = {};
   imageSizes.forEach(
-    size =>
+    (size) =>
       (imageUrls[size] = `${tmdbConfig.images.secure_base_url}${size}${path}`)
   );
   return imageUrls;
@@ -66,6 +66,6 @@ export const getMovie = (movieId: number) => {
 
 export const searchMovies = (query: string, page: number) => {
   return getPaginated<Tmdb.MovieResult>("search/movie", page, [
-    { key: "query", value: query }
+    { key: "query", value: query },
   ]);
 };

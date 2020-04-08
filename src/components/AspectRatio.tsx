@@ -18,8 +18,8 @@ const AspectRatio = ({ ratio, children, ...props }: AspectRatioProps) => {
           height: 0,
           content: "''",
           display: "block",
-          paddingBottom: `${(1 / ratio) * 100}%`
-        }
+          paddingBottom: `${(1 / ratio) * 100}%`,
+        },
       }}
       {...otherProps}
     >
@@ -29,7 +29,7 @@ const AspectRatio = ({ ratio, children, ...props }: AspectRatioProps) => {
           width: "100%",
           height: "100%",
           top: 0,
-          left: 0
+          left: 0,
         }}
       >
         {children}

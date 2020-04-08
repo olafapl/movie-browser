@@ -8,7 +8,7 @@ const useOnClickOutside = (
     const listener = (event: MouseEvent | TouchEvent) => {
       if (
         refs.every(
-          ref => !ref.current || !ref.current.contains(event.target as Node)
+          (ref) => !ref.current || !ref.current.contains(event.target as Node)
         )
       ) {
         handler();

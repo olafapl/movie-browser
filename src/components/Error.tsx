@@ -10,7 +10,7 @@ const Error = () => {
         sx={{
           alignItems: "center",
           justifyContent: "center",
-          flex: "1"
+          flex: "1",
         }}
       >
         <Text>Could not find the requested page.</Text>
