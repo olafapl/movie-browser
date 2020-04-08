@@ -41,7 +41,9 @@ const tmdbConfigSlice = createSlice({
       state.fetchDate = new Date().getTime();
     });
     builder.addCase(fetchConfig.rejected, (state, action) => {
+      state.isFetching = false;
       state.error = action.payload as string;
+      state.fetchDate = new Date().getTime();
     });
   },
 });
