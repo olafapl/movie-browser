@@ -7,8 +7,8 @@ import { getImageUrls } from "api/tmdb";
 import useTmdbConfig from "features/movies/useTmdbConfig";
 
 interface TmdbImageProps {
-  path: string;
   imageType: Tmdb.ImageType;
+  path?: string;
   className?: string;
   alt?: string;
   sizes?: string;
@@ -19,12 +19,12 @@ const TmdbImage = ({
   imageType,
   className,
   alt,
-  sizes
+  sizes,
 }: TmdbImageProps) => {
-  const [isLoadingImage, setIsLoadingImage] = useState(true);
+  const [isLoadingImage, setIsLoadingImage] = useState(!!path);
   const [config, isFetchingConfig] = useTmdbConfig();
   const widthRegex = /w\d+/;
-  if (config) {
+  if (config && path) {
     const imageUrls = getImageUrls(path, config, imageType);
     const imageSizes = Object.keys(imageUrls);
     return (
@@ -32,8 +32,8 @@ const TmdbImage = ({
         <Image
           src={Object.values(imageUrls)[Math.floor(imageSizes.length / 2)]}
           srcSet={imageSizes
-            .filter(size => widthRegex.test(size))
-            .map(size => `${imageUrls[size]} ${size.slice(1)}w`)
+            .filter((size) => widthRegex.test(size))
+            .map((size) => `${imageUrls[size]} ${size.slice(1)}w`)
             .join(", ")}
           sizes={sizes}
           className={className}
@@ -44,7 +44,7 @@ const TmdbImage = ({
             opacity: isLoadingImage ? 0 : 1,
             height: isLoadingImage ? 0 : "auto",
             width: isLoadingImage ? 0 : "auto",
-            transition: "visibility 0s, opacity 0.2s ease-in-out"
+            transition: "visibility 0s, opacity 0.2s ease-in-out",
           }}
         />
         {isLoadingImage && (
@@ -70,7 +70,7 @@ const Placeholder = ({ imageType, isLoading }: PlaceholderProps) => {
     <AspectRatio
       ratio={imageType === "poster" ? 2 / 3 : 16 / 9}
       sx={{
-        width: "100%"
+        width: "100%",
       }}
     >
       <Box
@@ -78,12 +78,14 @@ const Placeholder = ({ imageType, isLoading }: PlaceholderProps) => {
           width: "100%",
           height: "100%",
           backgroundColor: darken("muted", 0.05),
-          backgroundImage: theme =>
+          backgroundImage: (theme) =>
             imageType === "poster"
               ? `linear-gradient(45deg, ${theme.colors.muted}, transparent)`
               : "",
           backgroundSize: "400%",
-          animation: isLoading ? `${gradientPosition} 1.5s linear infinite` : ""
+          animation: isLoading
+            ? `${gradientPosition} 1.5s linear infinite`
+            : "",
         }}
       ></Box>
     </AspectRatio>

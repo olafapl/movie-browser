@@ -1,6 +1,6 @@
 import React from "react";
 import css from "@emotion/css/macro";
-import { Flex, Box, Grid, Button, Link, Text, Spinner } from "theme-ui";
+import { Flex, Grid, Button, Link, Text, Spinner } from "theme-ui";
 import { Link as RouterLink } from "react-router-dom";
 import TmdbImage from "components/TmdbImage";
 
@@ -21,14 +21,14 @@ const MovieGrid = ({
   showPreviousButton,
   showNextButton,
   isLoading,
-  error
+  error,
 }: MovieGridProps) => {
   return (
     <React.Fragment>
       {movies?.length ? (
         <React.Fragment>
           <Grid columns={[2, 4, 5]} gap="3" sx={{ alignItems: "center" }}>
-            {movies.map(movie => (
+            {movies.map((movie) => (
               <Link
                 as={RouterLink}
                 // @ts-ignore
@@ -40,60 +40,49 @@ const MovieGrid = ({
                   width: "100%",
                   overflow: "hidden",
                   borderRadius: 1,
-                  color: "white",
-                  transition: "opacity 0.2s ease-in-out",
+                  opacity: 1,
+                  transform: "scale(1)",
+                  transition:
+                    "transform 0.2s ease-in-out, opacity 0.2s ease-in-out",
                   ":hover, :focus": {
                     opacity: 0.8,
-                    textDecoration: "none",
-                    color: "white",
-                    ".title": {
-                      transform: "translatey(0)",
-                      opacity: 1
-                    }
-                  }
+                  },
+                  ":active": {
+                    transform: "scale(0.975)",
+                  },
                 }}
               >
                 <Flex
                   sx={{
                     height: "100%",
-                    width: "100%"
+                    width: "100%",
+                    justifyContent: "center",
                   }}
                 >
-                  {movie.poster_path ? (
-                    <TmdbImage
-                      path={movie.poster_path}
-                      imageType="poster"
-                      sizes="(max-width: 30em) 50vw, (max-width: 48em) 25vw, 20vw"
-                      css={css`
-                        width: 100%;
-                      `}
-                    />
-                  ) : (
-                    <Box sx={{ height: "100%", width: "100%" }}></Box>
+                  <TmdbImage
+                    path={movie.poster_path ?? undefined}
+                    imageType="poster"
+                    alt={movie.title}
+                    sizes="(max-width: 30em) 50vw, (max-width: 48em) 25vw, 20vw"
+                    css={css`
+                      width: 100%;
+                    `}
+                  />
+                  {!movie.poster_path && (
+                    <Text
+                      sx={{
+                        position: "absolute",
+                        width: "100%",
+                        textAlign: "center",
+                        alignSelf: "center",
+                        p: 2,
+                        fontWeight: "bold",
+                        color: "white",
+                      }}
+                    >
+                      {movie.title}
+                    </Text>
                   )}
-
-                  {/* TODO truncate text */}
-                  <Text
-                    className="title"
-                    variant="truncated"
-                    sx={{
-                      position: "absolute",
-                      transform: "translatey(1rem)",
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                      p: 2,
-                      pt: 3,
-                      backgroundImage:
-                        "linear-gradient(to top, #000, transparent)",
-                      fontWeight: "bold",
-                      opacity: 0,
-                      transition:
-                        "transform 0.2s ease-in-out, opacity 0.2s ease-in-out"
-                    }}
-                  >
-                    {movie.title}
-                  </Text>
                 </Flex>
               </Link>
             ))}
@@ -130,7 +119,7 @@ const MovieGrid = ({
           sx={{
             alignItems: "center",
             justifyContent: "center",
-            flex: "1"
+            flex: "1",
           }}
         >
           {isLoading ? <Spinner /> : error && <Text>An error occurred.</Text>}

@@ -23,30 +23,28 @@ const Movie = () => {
               gridTemplateRows: "min-content",
               gridTemplateAreas: [
                 "'poster title' 'meta meta' 'overview overview'",
-                "'poster title' 'poster meta' 'poster overview'"
+                "'poster title' 'poster meta' 'poster overview'",
               ],
               columnGap: [3, 4],
               rowGap: 3,
               alignItems: "end",
               overflow: "hidden",
-              zIndex: 1
+              zIndex: 1,
             }}
           >
-            {movie.poster_path && (
-              <Flex
-                sx={{
-                  gridArea: "poster",
-                  overflow: "hidden",
-                  borderRadius: 1
-                }}
-              >
-                <TmdbImage
-                  path={movie.poster_path}
-                  imageType="poster"
-                  sizes="33vw"
-                />
-              </Flex>
-            )}
+            <Flex
+              sx={{
+                gridArea: "poster",
+                overflow: "hidden",
+                borderRadius: 1,
+              }}
+            >
+              <TmdbImage
+                path={movie.poster_path ?? undefined}
+                imageType="poster"
+                sizes="33vw"
+              />
+            </Flex>
             <Flex sx={{ gridArea: "title", flexDirection: "column" }}>
               <Text as="h1" variant="heading">
                 {movie.title}
@@ -68,7 +66,7 @@ const Movie = () => {
               </Flex>
               {movie.genres.length > 0 && (
                 <Flex sx={{ alignItems: "center", flexWrap: "wrap", m: -1 }}>
-                  {movie.genres.map(genre => (
+                  {movie.genres.map((genre) => (
                     <Badge key={genre.id} m="1" variant="plain">
                       {genre.name}
                     </Badge>
@@ -107,9 +105,9 @@ const Movie = () => {
                 bottom: 0,
                 left: 0,
                 backgroundColor: alpha("background", 0.33),
-                backgroundImage: theme =>
-                  `linear-gradient(to top, ${theme.colors.background}, transparent)`
-              }
+                backgroundImage: (theme) =>
+                  `linear-gradient(to top, ${theme.colors.background}, transparent)`,
+              },
             }}
           >
             <TmdbImage
@@ -120,7 +118,7 @@ const Movie = () => {
                 objectFit: "cover",
                 objectPosition: "50%",
                 width: "100%",
-                height: "100%"
+                height: "100%",
               }}
             />
           </Box>
@@ -132,7 +130,7 @@ const Movie = () => {
       sx={{
         alignItems: "center",
         justifyContent: "center",
-        flex: "1"
+        flex: "1",
       }}
     >
       <Container
