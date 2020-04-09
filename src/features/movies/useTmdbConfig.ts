@@ -12,11 +12,9 @@ const useTmdbConfig = (): [Tmdb.Config | null, boolean, string | null] => {
   const dispatch = useDispatch();
 
   if (
-    !config &&
     !isFetching &&
-    (!fetchDate ||
-      addWeeks(new Date(fetchDate), 2) < new Date() ||
-      fetchDate < mountDate)
+    (!config || addWeeks(new Date(fetchDate!), 2) < new Date()) &&
+    (!fetchDate || fetchDate < mountDate)
   ) {
     dispatch(fetchConfig());
   }

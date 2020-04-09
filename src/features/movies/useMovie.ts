@@ -21,9 +21,7 @@ const useMovie = (
   useEffect(() => {
     if (
       !movie?.isFetching &&
-      (!movie?.data ||
-        (movie.fetchDate &&
-          addWeeks(new Date(movie.fetchDate), 2) < new Date())) &&
+      (!movie?.data || addWeeks(new Date(movie.fetchDate!), 2) < new Date()) &&
       (!movie?.fetchDate || movie.fetchDate < argDate)
     ) {
       dispatch(fetchMovie(movieId));
