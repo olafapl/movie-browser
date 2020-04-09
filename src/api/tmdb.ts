@@ -3,24 +3,34 @@ interface Arg {
   value?: string | string[];
 }
 
-export const getEndpoint = <T>(endpoint: string, args?: Arg[]): Promise<T> => {
-  const queryString = args
-    ? args
-        .map(
-          ({ key, value }) =>
-            `&${key}${
-              value !== undefined
-                ? `=${encodeURIComponent(
-                    typeof value === "string" ? value : value.join(",")
-                  )}`
-                : ""
-            }`
-        )
-        .join("")
-    : "";
-  return fetch(
-    `https://api.themoviedb.org/3/${endpoint}?api_key=${process.env.REACT_APP_TMDB_API_KEY}${queryString}`
-  ).then((response) => response.json());
+export const getEndpoint = async <T>(
+  endpoint: string,
+  args: Arg[] = []
+): Promise<T> => {
+  const queryString = `?api_key=${process.env.REACT_APP_TMDB_API_KEY}${args.map(
+    ({ key, value }) => {
+      if (value === undefined) {
+        return `&${key}`;
+      }
+
+      return `&${key}=${encodeURIComponent(
+        typeof value === "string" ? value : value.join(",")
+      )}`;
+    }
+  )}`;
+  const response = await fetch(
+    `https://api.themoviedb.org/3/${endpoint}${queryString}`
+  );
+  const jsonResponse = await response.json();
+  if (response.ok) {
+    return jsonResponse;
+  }
+  if ("status_code" in jsonResponse && "status_message" in jsonResponse) {
+    throw new Error(
+      `${jsonResponse.status_code}: ${jsonResponse.status_message}`
+    );
+  }
+  throw new Error("Something went wrong");
 };
 
 export const getConfig = () => {
@@ -47,13 +57,12 @@ export const getImageUrls = (
 export const getPaginated = <T>(
   endpoint: string,
   page: number,
-  args?: Arg[]
+  args: Arg[] = []
 ) => {
-  const pageArg = { key: "page", value: page.toString() };
-  return getEndpoint<Tmdb.PaginatedResults<T> | Tmdb.Error>(
-    endpoint,
-    args ? [...args, pageArg] : [pageArg]
-  );
+  return getEndpoint<Tmdb.PaginatedResults<T>>(endpoint, [
+    ...args,
+    { key: "page", value: page.toString() },
+  ]);
 };
 
 export const getMovies = (endpoint: string, page: number) => {
@@ -61,7 +70,7 @@ export const getMovies = (endpoint: string, page: number) => {
 };
 
 export const getMovie = (movieId: number) => {
-  return getEndpoint<Tmdb.Movie | Tmdb.Error>(`movie/${movieId}`);
+  return getEndpoint<Tmdb.Movie>(`movie/${movieId}`);
 };
 
 export const searchMovies = (query: string, page: number) => {

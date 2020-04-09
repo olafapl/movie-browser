@@ -1,27 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMovies } from "api/tmdb";
 
-interface FetchArgs {
-  endpoint: string;
-  page: number;
-}
-
 export const fetchMovies = createAsyncThunk(
   "movies/fetchMovies",
-  async ({ endpoint, page }: FetchArgs, thunkAPI) => {
-    try {
-      const response = await getMovies(endpoint, page);
-      if ("results" in response) {
-        return response;
-      } else {
-        return thunkAPI.rejectWithValue(
-          `${response.status_code}: ${response.status_message}`
-        );
-      }
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.toString());
-    }
-  }
+  ({ endpoint, page }: { endpoint: string; page: number }) =>
+    getMovies(endpoint, page)
 );
 
 interface MoviesResults {
@@ -80,7 +63,7 @@ const moviesSlice = createSlice({
     builder.addCase(fetchMovies.rejected, (state, action) => {
       const { endpoint, page } = action.meta.arg;
       state.endpoints[endpoint].pages[page].isFetching = false;
-      state.endpoints[endpoint].pages[page].error = action.payload as string;
+      state.endpoints[endpoint].pages[page].error = action.error.message!;
       state.endpoints[endpoint].pages[page].fetchDate = new Date().getTime();
     });
   },

@@ -1,15 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getConfig } from "api/tmdb";
 
-export const fetchConfig = createAsyncThunk(
-  "tmdbConfig/fetchConfig",
-  async (arg, thunkAPI) => {
-    try {
-      return await getConfig();
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.toString());
-    }
-  }
+export const fetchConfig = createAsyncThunk("tmdbConfig/fetchConfig", () =>
+  getConfig()
 );
 
 interface TmdbConfigState {
@@ -31,7 +24,7 @@ const tmdbConfigSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchConfig.pending, (state, action) => {
+    builder.addCase(fetchConfig.pending, (state) => {
       state.isFetching = true;
     });
     builder.addCase(fetchConfig.fulfilled, (state, action) => {
@@ -42,7 +35,7 @@ const tmdbConfigSlice = createSlice({
     });
     builder.addCase(fetchConfig.rejected, (state, action) => {
       state.isFetching = false;
-      state.error = action.payload as string;
+      state.error = action.error.message!;
       state.fetchDate = new Date().getTime();
     });
   },

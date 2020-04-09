@@ -92,9 +92,4 @@ declare namespace Tmdb {
   };
 
   type ImageType = "poster" | "backdrop";
-
-  interface Error {
-    status_message: string;
-    status_code: number;
-  }
 }
