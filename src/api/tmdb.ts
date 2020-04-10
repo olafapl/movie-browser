@@ -1,6 +1,6 @@
 interface Arg {
   key: string;
-  value?: string | string[];
+  value?: string | number | (string | number)[];
 }
 
 export const getEndpoint = async <T>(
@@ -10,11 +10,10 @@ export const getEndpoint = async <T>(
   const queryString = `?api_key=${process.env.REACT_APP_TMDB_API_KEY}${args.map(
     ({ key, value }) => {
       if (value === undefined) {
-        return `&${key}`;
+        return `&${encodeURIComponent(key)}`;
       }
-
-      return `&${key}=${encodeURIComponent(
-        typeof value === "string" ? value : value.join(",")
+      return `&${encodeURIComponent(key)}=${encodeURIComponent(
+        Array.isArray(value) ? value.join(",") : value
       )}`;
     }
   )}`;
@@ -61,7 +60,7 @@ export const getPaginated = <T>(
 ) => {
   return getEndpoint<Tmdb.PaginatedResults<T>>(endpoint, [
     ...args,
-    { key: "page", value: page.toString() },
+    { key: "page", value: page },
   ]);
 };
 
