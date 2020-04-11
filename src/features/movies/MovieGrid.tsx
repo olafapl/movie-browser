@@ -2,7 +2,7 @@ import React from "react";
 /** @jsx jsx */
 import { jsx, Flex, Grid, Button, Link, Text } from "theme-ui";
 import { Link as RouterLink } from "react-router-dom";
-import TmdbImage from "components/TmdbImage";
+import { TmdbImage, Placeholder } from "components/TmdbImage";
 import Loading from "components/Loading";
 import Error from "components/Error";
 
@@ -60,26 +60,30 @@ const MovieGrid = ({
                   justifyContent: "center",
                 }}
               >
-                <TmdbImage
-                  path={movie.poster_path ?? undefined}
-                  imageType="poster"
-                  alt={movie.title}
-                  sizes="(max-width: 30em) 50vw, (max-width: 48em) 25vw, 20vw"
-                />
-                {!movie.poster_path && (
-                  <Text
-                    sx={{
-                      position: "absolute",
-                      width: "100%",
-                      textAlign: "center",
-                      alignSelf: "center",
-                      p: 2,
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    {movie.title}
-                  </Text>
+                {movie.poster_path ? (
+                  <TmdbImage
+                    path={movie.poster_path}
+                    imageType="poster"
+                    alt={movie.title}
+                    sizes="(max-width: 30em) 50vw, (max-width: 48em) 25vw, 20vw"
+                  />
+                ) : (
+                  <React.Fragment>
+                    <Placeholder imageType="poster" />
+                    <Text
+                      sx={{
+                        position: "absolute",
+                        width: "100%",
+                        textAlign: "center",
+                        alignSelf: "center",
+                        p: 2,
+                        fontWeight: "bold",
+                        color: "white",
+                      }}
+                    >
+                      {movie.title}
+                    </Text>
+                  </React.Fragment>
                 )}
               </Flex>
             </Link>

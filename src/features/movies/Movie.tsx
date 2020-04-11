@@ -4,7 +4,7 @@ import { alpha } from "@theme-ui/color";
 import { useParams } from "react-router-dom";
 import useMovie from "features/movies/useMovie";
 import Head from "components/Head";
-import TmdbImage from "components/TmdbImage";
+import { TmdbImage, Placeholder } from "components/TmdbImage";
 import Error from "components/Error";
 import Loading from "components/Loading";
 
@@ -40,11 +40,15 @@ const Movie = () => {
                 borderRadius: 1,
               }}
             >
-              <TmdbImage
-                path={movie.poster_path ?? undefined}
-                imageType="poster"
-                sizes="33vw"
-              />
+              {movie.poster_path ? (
+                <TmdbImage
+                  path={movie.poster_path}
+                  imageType="poster"
+                  sizes="33vw"
+                />
+              ) : (
+                <Placeholder imageType="poster" />
+              )}
             </Flex>
             <Flex sx={{ gridArea: "title", flexDirection: "column" }}>
               <Text as="h1" variant="heading">

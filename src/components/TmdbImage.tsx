@@ -9,23 +9,23 @@ import useTmdbConfig from "features/movies/useTmdbConfig";
 
 interface TmdbImageProps {
   imageType: Tmdb.ImageType;
-  path?: string;
+  path: string;
   className?: string;
   alt?: string;
   sizes?: string;
 }
 
-const TmdbImage = ({
+export const TmdbImage = ({
   path,
   imageType,
   className,
   alt,
   sizes,
 }: TmdbImageProps) => {
-  const [isLoadingImage, setIsLoadingImage] = useState(!!path);
+  const [isLoadingImage, setIsLoadingImage] = useState(true);
   const [config, isFetchingConfig] = useTmdbConfig();
   const widthRegex = /w\d+/;
-  if (config && path) {
+  if (config) {
     const imageUrls = getImageUrls(path, config, imageType);
     const imageSizes = Object.keys(imageUrls);
     return (
@@ -45,20 +45,13 @@ const TmdbImage = ({
             opacity: isLoadingImage ? 0 : 1,
             height: isLoadingImage ? 0 : "auto",
             width: isLoadingImage ? 0 : "auto",
-            transition: "visibility 0s, opacity 0.2s ease-in-out",
           }}
         />
-        {isLoadingImage && (
-          <Placeholder
-            imageType={imageType}
-            isLoading={isFetchingConfig || isLoadingImage}
-          />
-        )}
+        {isLoadingImage && <Placeholder imageType={imageType} isLoading />}
       </React.Fragment>
     );
-  } else {
-    return <Placeholder imageType={imageType} isLoading={isFetchingConfig} />;
   }
+  return <Placeholder imageType={imageType} isLoading={isFetchingConfig} />;
 };
 
 interface PlaceholderProps {
@@ -66,7 +59,7 @@ interface PlaceholderProps {
   isLoading?: boolean;
 }
 
-const Placeholder = ({ imageType, isLoading }: PlaceholderProps) => {
+export const Placeholder = ({ imageType, isLoading }: PlaceholderProps) => {
   return (
     <AspectRatio
       ratio={imageType === "poster" ? 2 / 3 : 16 / 9}
@@ -104,5 +97,3 @@ const gradientPosition = keyframes`
     background-position: 0% 100%;
   }
 `;
-
-export default TmdbImage;
