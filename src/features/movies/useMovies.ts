@@ -33,6 +33,7 @@ const useMovies = (
 
   useEffect(() => {
     setArgDate(new Date().getTime());
+    window.scrollTo(0, 0);
   }, [endpoint, page]);
 
   useEffect(() => {

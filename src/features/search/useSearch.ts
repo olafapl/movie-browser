@@ -38,6 +38,7 @@ const useSearch = (): [
 
   useEffect(() => {
     setArgDate(new Date().getTime());
+    window.scrollTo(0, 0);
   }, [query, page]);
 
   useEffect(() => {
