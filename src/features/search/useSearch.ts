@@ -5,7 +5,7 @@ import { fetchResults } from "features/search/searchSlice";
 import useSelector from "hooks/useSelector";
 
 const useSearch = (): [
-  Tmdb.MovieResult[] | null,
+  Tmdb.MovieListResult[] | null,
   string,
   (query: string) => void,
   number,

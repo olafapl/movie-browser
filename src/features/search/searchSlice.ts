@@ -10,7 +10,7 @@ export const fetchResults = createAsyncThunk(
 interface SearchResults {
   pages: {
     [key: number]: {
-      data: Tmdb.MovieResult[] | null;
+      data: Tmdb.MovieListResult[] | null;
       isFetching: boolean;
       error: string | null;
       fetchDate: number | null;

@@ -1,19 +1,20 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 /** @jsx jsx */
-import { jsx, Flex, Box, Text, Badge, Spinner, Container } from "theme-ui";
+import { jsx, Flex, Box, Text, Badge, Container } from "theme-ui";
 import { alpha } from "@theme-ui/color";
+import { useParams } from "react-router-dom";
 import useMovie from "features/movies/useMovie";
 import Head from "components/Head";
 import TmdbImage from "components/TmdbImage";
+import Error from "components/Error";
+import Loading from "components/Loading";
 
 const Movie = () => {
   const { id } = useParams();
   const [movie, isFetching, error] = useMovie(Number.parseInt(id!));
-  return movie ? (
-    <React.Fragment>
-      <Head title={movie.title} />
+  if (movie) {
+    return (
       <Box sx={{ position: "relative" }}>
+        <Head title={movie.title} />
         <Container>
           <Box
             sx={{
@@ -76,16 +77,16 @@ const Movie = () => {
             </Box>
             <Text sx={{ gridArea: "overview" }}>{movie.overview}</Text>
             {/*             {movie.imdb_id && (
-              <Link
-                href={`https://www.imdb.com/title/${movie.imdb_id}`}
-                sx={{
-                  gridColumn: "span 2",
-                  justifySelf: "center"
-                }}
-              >
-                Open on IMDb
-              </Link>
-            )} */}
+                <Link
+                  href={`https://www.imdb.com/title/${movie.imdb_id}`}
+                  sx={{
+                    gridColumn: "span 2",
+                    justifySelf: "center"
+                  }}
+                >
+                  Open on IMDb
+                </Link>
+              )} */}
           </Box>
         </Container>
         {movie.backdrop_path && (
@@ -124,22 +125,12 @@ const Movie = () => {
           </Box>
         )}
       </Box>
-    </React.Fragment>
-  ) : (
-    <Flex
-      sx={{
-        alignItems: "center",
-        justifyContent: "center",
-        flex: "1",
-      }}
-    >
-      <Container
-        sx={{ alignItems: "center", justifyContent: "center", flex: "1" }}
-      >
-        {isFetching ? <Spinner /> : error && <Text>An error occurred.</Text>}
-      </Container>
-    </Flex>
-  );
+    );
+  }
+  if (isFetching) {
+    return <Loading />;
+  }
+  return error ? <Error /> : null;
 };
 
 export default Movie;

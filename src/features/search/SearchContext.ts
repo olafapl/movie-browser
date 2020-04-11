@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 interface SearchContextState {
-  movies: Tmdb.MovieResult[] | null;
+  movies: Tmdb.MovieListResult[] | null;
   query: string;
   setQuery: (query: string) => void;
   page: number;

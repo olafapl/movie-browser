@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Text, Container } from "theme-ui";
+/** @jsx jsx */
+import { jsx, Box, Text, Container } from "theme-ui";
 import { ReactComponent as TmdbLogo } from "features/about/tmdb-logo.svg";
 
 const About = () => {
@@ -8,7 +8,7 @@ const About = () => {
       <Box sx={{ width: "7rem", alignSelf: "center", mb: 3 }}>
         <TmdbLogo />
       </Box>
-      <Text>
+      <Text as="p">
         This product uses the TMDb API but is not endorsed or certified by TMDb.
       </Text>
     </Container>

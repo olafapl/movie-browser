@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React from "react";
 /** @jsx jsx */
 import { jsx, Flex, Close, Text } from "theme-ui";
 import { motion, Variants, Transition } from "framer-motion";
@@ -27,7 +27,7 @@ interface DrawerProps {
   setIsOpen: (isOpen: boolean) => void;
   children: React.ReactNode;
   title?: string;
-  drawerRef?: RefObject<HTMLDivElement>;
+  drawerRef?: React.RefObject<HTMLDivElement>;
 }
 
 const Drawer = ({

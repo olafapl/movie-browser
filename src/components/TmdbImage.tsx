@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+/** @jsx jsx */
+import { jsx, Box, Image } from "theme-ui";
 import { keyframes } from "@emotion/core";
-import { Box, Image } from "theme-ui";
 import { darken } from "@theme-ui/color";
 import AspectRatio from "components/AspectRatio";
 import { getImageUrls } from "api/tmdb";
@@ -28,7 +29,7 @@ const TmdbImage = ({
     const imageUrls = getImageUrls(path, config, imageType);
     const imageSizes = Object.keys(imageUrls);
     return (
-      <>
+      <React.Fragment>
         <Image
           src={Object.values(imageUrls)[Math.floor(imageSizes.length / 2)]}
           srcSet={imageSizes
@@ -53,7 +54,7 @@ const TmdbImage = ({
             isLoading={isFetchingConfig || isLoadingImage}
           />
         )}
-      </>
+      </React.Fragment>
     );
   } else {
     return <Placeholder imageType={imageType} isLoading={isFetchingConfig} />;

@@ -10,7 +10,7 @@ import useSelector from "hooks/useSelector";
 const useMovies = (
   endpoint: string
 ): [
-  Tmdb.MovieResult[] | null,
+  Tmdb.MovieListResult[] | null,
   number,
   (page: number) => void,
   number | null,

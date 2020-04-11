@@ -58,14 +58,14 @@ export const getPaginated = <T>(
   page: number,
   args: Arg[] = []
 ) => {
-  return getEndpoint<Tmdb.PaginatedResults<T>>(endpoint, [
+  return getEndpoint<Tmdb.Paginated<T>>(endpoint, [
     ...args,
     { key: "page", value: page },
   ]);
 };
 
 export const getMovies = (endpoint: string, page: number) => {
-  return getPaginated<Tmdb.MovieResult>(endpoint, page);
+  return getPaginated<Tmdb.MovieListResult>(endpoint, page);
 };
 
 export const getMovie = (movieId: number) => {
@@ -73,7 +73,7 @@ export const getMovie = (movieId: number) => {
 };
 
 export const searchMovies = (query: string, page: number) => {
-  return getPaginated<Tmdb.MovieResult>("search/movie", page, [
+  return getPaginated<Tmdb.MovieListResult>("search/movie", page, [
     { key: "query", value: query },
   ]);
 };

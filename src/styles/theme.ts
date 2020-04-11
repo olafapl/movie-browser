@@ -108,6 +108,15 @@ const theme = merge(baseTheme, {
       },
     },
   },
+  styles: {
+    a: {
+      color: "text",
+      textDecoration: "underline",
+      ":hover,:focus": {
+        color: "text",
+      },
+    },
+  },
 });
 
 export default theme;

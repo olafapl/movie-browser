@@ -1,4 +1,3 @@
-import React from "react";
 /** @jsx jsx */
 import { jsx, Text, Container } from "theme-ui";
 import useMovies from "features/movies/useMovies";
@@ -16,23 +15,21 @@ const Movies = ({ title, endpoint }: MoviesProps) => {
   );
 
   return (
-    <React.Fragment>
+    <Container sx={{ flex: 1 }}>
       <Head title={title} />
-      <Container sx={{ flex: "1" }}>
-        <Text as="h1" sx={{ variant: "text.heading", mb: 4 }}>
-          {title}
-        </Text>
-        <MovieGrid
-          movies={movies}
-          page={page}
-          setPage={setPage}
-          showPreviousButton={page > 1}
-          showNextButton={totalPages !== null && page < totalPages}
-          isLoading={!!isFetching}
-          error={error}
-        />
-      </Container>
-    </React.Fragment>
+      <Text as="h1" variant="heading" mb="4">
+        {title}
+      </Text>
+      <MovieGrid
+        movies={movies}
+        page={page}
+        setPage={setPage}
+        showPreviousButton={page > 1}
+        showNextButton={totalPages !== null && page < totalPages}
+        isLoading={!!isFetching}
+        error={error}
+      />
+    </Container>
   );
 };
 

@@ -1,21 +1,31 @@
-import React from "react";
-import { Flex, Text } from "theme-ui";
+/** @jsx jsx */
+import { jsx, Flex, Text } from "theme-ui";
 import Head from "components/Head";
 
-const Error = () => {
+interface ErrorProps {
+  title?: string;
+  message?: string;
+}
+
+const Error = ({
+  title = "404",
+  message = "Could not find the requested page.",
+}: ErrorProps) => {
   return (
-    <>
-      <Head title="404" />
-      <Flex
-        sx={{
-          alignItems: "center",
-          justifyContent: "center",
-          flex: "1",
-        }}
-      >
-        <Text>Could not find the requested page.</Text>
-      </Flex>
-    </>
+    <Flex
+      sx={{
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        flex: "1",
+      }}
+    >
+      <Head title={title} />
+      <Text as="h1" variant="heading" mb="4">
+        {title}
+      </Text>
+      <Text as="p">{message}</Text>
+    </Flex>
   );
 };
 
