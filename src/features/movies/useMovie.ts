@@ -9,7 +9,7 @@ import useSelector from "hooks/useSelector";
  */
 const useMovie = (
   movieId: number
-): [Tmdb.Movie | null, boolean, string | null] => {
+): [Tmdb.Movie | null, boolean | null, string | null] => {
   const [argDate, setArgDate] = useState(new Date().getTime());
   const movie = useSelector((state) => state.movie.movieIds[movieId]);
   const dispatch = useDispatch();
