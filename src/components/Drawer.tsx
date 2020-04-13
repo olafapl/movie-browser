@@ -72,6 +72,7 @@ const Drawer = ({
           width: "25rem",
           maxWidth: "67vw",
           backgroundColor: "muted",
+          overflowY: "auto",
           zIndex: 100,
         }}
         initial={false}
