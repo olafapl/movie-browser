@@ -10112,15 +10112,6 @@ query-string@^4.1.0:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-query-string@^5.0.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.1.1.tgz#a78c012b71c17e05f2e3fa2319dd330682efb3cb"
-  integrity sha512-gjWOsm2SoGlgLEdAGt7a6slVOk9mGiXmPFMqrEhLQ68rhQuBnpfs3+EmlvqKyxnCo9/PPlF+9MtY02S1aFg+Jw==
-  dependencies:
-    decode-uri-component "^0.2.0"
-    object-assign "^4.1.0"
-    strict-uri-encode "^1.0.0"
-
 querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
@@ -11053,12 +11044,10 @@ serialize-javascript@^2.1.2:
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-2.1.2.tgz#ecec53b0e0317bdc95ef76ab7074b7384785fa61"
   integrity sha512-rs9OggEUF0V4jUSecXazOYsLfu7OGK2qIn3c7IPBiffz32XniEp/TX9Xmc9LQfK2nQ2QKHvZ2oygKUGU0lG4jQ==
 
-serialize-query-params@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/serialize-query-params/-/serialize-query-params-0.3.0.tgz#c815306729463f2a37adb171faf352992fcc0ce8"
-  integrity sha512-gtarsAa5B7L+v2mxbm0zTq8WjqwjgYHZmLsyvxGnlSfW2bWkokV0QKzRxLCGHF2aDqbQYCCNaj1/NP6DqbcEKQ==
-  dependencies:
-    query-string "^5.0.0"
+serialize-query-params@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/serialize-query-params/-/serialize-query-params-1.1.0.tgz#b95a15bf0dd4a4df6162c4d72208f1a31e850459"
+  integrity sha512-CF/iHtjCDSj2FzBCsb8JBFruqERpCGgI+8L+236BxhZUwDclwxiOBELvP87HH5EbL9XElvvP+259mP0XgT6l5g==
 
 serve-index@^1.9.1:
   version "1.9.1"
@@ -12238,12 +12227,12 @@ use-lodash-debounce@^1.1.0:
   resolved "https://registry.yarnpkg.com/use-lodash-debounce/-/use-lodash-debounce-1.1.0.tgz#c31826a7c98788cb1810615e1ad102fc38598fe7"
   integrity sha512-VNrIm8hpw4N6JG0cmtxz6w4d4eVGfJM1GkiAEBCqkRBl1GJF05+2ikqOUHqwML+8ppHxin0QnFfJl4jqmK1Fjw==
 
-use-query-params@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/use-query-params/-/use-query-params-0.6.0.tgz#66e2f25b0ed3f18ec38a493779513335b8b2bf54"
-  integrity sha512-AEZm0+TTYuV3/l/IC+Iyqkvol1muXWJd2hlgY2erFESvtZNIpU4BrsTo6jnOBFd/t6rTOQuFjKSmW/+TAy8mzQ==
+use-query-params@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/use-query-params/-/use-query-params-1.1.0.tgz#cd86d8b5fc55aa7008156a483a211e3bbcfe207b"
+  integrity sha512-7j84TW2gFPL4pA52hS31x5k/aLUWgFckrxz4HAZ72O2dVswvk0CgPO3XGwoIkgA0uFqy/5lPoErGGwG9kXWpQg==
   dependencies:
-    serialize-query-params "^0.3.0"
+    serialize-query-params "^1.1.0"
 
 use@^3.1.0:
   version "3.1.1"
