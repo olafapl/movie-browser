@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Box, Text, Container } from "theme-ui";
-import { ReactComponent as TmdbLogo } from "features/about/tmdb-logo.svg";
+import { ReactComponent as TmdbLogo } from "about/tmdb-logo.svg";
 
 const About = () => {
   return (

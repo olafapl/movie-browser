@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 /** @jsx jsx */
 import { jsx, Box, Image } from "theme-ui";
 import { keyframes } from "@emotion/core";
 import { darken } from "@theme-ui/color";
-import AspectRatio from "components/AspectRatio";
-import { getImageUrls } from "api/tmdb";
-import useTmdbConfig from "features/movies/useTmdbConfig";
+import AspectRatio from "common/AspectRatio";
+import { getImageUrls } from "common/tmdbApi";
+import TmdbConfigContext from "tmdbConfig/TmdbConfigContext";
 
 interface TmdbImageProps {
   imageType: Tmdb.ImageType;
@@ -23,7 +23,7 @@ export const TmdbImage = ({
   sizes,
 }: TmdbImageProps) => {
   const [isLoadingImage, setIsLoadingImage] = useState(true);
-  const [config, isFetchingConfig] = useTmdbConfig();
+  const { config, status } = useContext(TmdbConfigContext);
   const widthRegex = /w\d+/;
   if (config) {
     const imageUrls = getImageUrls(path, config, imageType);
@@ -51,7 +51,7 @@ export const TmdbImage = ({
       </React.Fragment>
     );
   }
-  return <Placeholder imageType={imageType} isLoading={isFetchingConfig} />;
+  return <Placeholder imageType={imageType} isLoading={status === "loading"} />;
 };
 
 interface PlaceholderProps {

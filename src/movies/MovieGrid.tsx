@@ -2,18 +2,18 @@ import React from "react";
 /** @jsx jsx */
 import { jsx, Flex, Grid, Button, Link, Text } from "theme-ui";
 import { Link as RouterLink } from "react-router-dom";
-import { TmdbImage, Placeholder } from "components/TmdbImage";
-import Loading from "components/Loading";
-import Error from "components/Error";
+import { TmdbImage, Placeholder } from "common/TmdbImage";
+import Loading from "common/Loading";
+import Error from "common/Error";
 
 interface MovieGridProps {
-  movies: Tmdb.MovieListResult[] | null;
   page: number;
   setPage: (page: number) => void;
   showPreviousButton: boolean;
   showNextButton: boolean;
   isLoading: boolean;
-  error: string | null;
+  movies?: Tmdb.MovieListResult[];
+  error?: string;
 }
 
 const MovieGrid = ({

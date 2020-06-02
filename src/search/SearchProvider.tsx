@@ -1,8 +1,12 @@
 import React from "react";
-import useSearch from "features/search/useSearch";
-import SearchContext from "features/search/SearchContext";
+import useSearch from "search/useSearch";
+import SearchContext from "search/SearchContext";
 
-const SearchProvider: React.FC = ({ children }) => {
+interface SearchProviderProps {
+  children?: React.ReactNode;
+}
+
+const SearchProvider = ({ children }: SearchProviderProps) => {
   const [
     movies,
     query,
@@ -10,8 +14,8 @@ const SearchProvider: React.FC = ({ children }) => {
     page,
     setPage,
     totalPages,
-    isFetching,
-    error
+    status,
+    error,
   ] = useSearch();
   return (
     <SearchContext.Provider
@@ -22,8 +26,8 @@ const SearchProvider: React.FC = ({ children }) => {
         page,
         setPage,
         totalPages,
-        isFetching,
-        error
+        status,
+        error,
       }}
     >
       {children}

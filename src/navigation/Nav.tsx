@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react";
 /** @jsx jsx */
 import { jsx, Flex, MenuButton, Container, Box, NavLink, Link } from "theme-ui";
 import { Link as RouterLink } from "react-router-dom";
-import SearchBar from "features/search/SearchBar";
-import useOnClickOutside from "hooks/useOnClickOutside";
-import Drawer from "components/Drawer";
+import SearchBar from "search/SearchBar";
+import useOnClickOutside from "common/useOnClickOutside";
+import Drawer from "navigation/Drawer";
 
 const routes = [
   { title: "Popular", path: "/movies/popular" },

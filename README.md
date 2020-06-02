@@ -22,10 +22,7 @@ A React application for browsing movies.
 
 - [Create React App](https://create-react-app.dev/) &mdash; Easy and quick project setup
 - [The TMDb API](https://developers.themoviedb.org/3/) &mdash; Movie data
-- [Redux Toolkit](https://redux-toolkit.js.org/), [Redux
-  Persist](https://github.com/rt2zz/redux-persist/), [Redux
-  Thunk](https://github.com/reduxjs/redux-thunk/), and [React Redux](https://react-redux.js.org/)
-  &mdash; State management
+- [React Query](https://github.com/tannerlinsley/react-query) &mdash; Hooks for fetching and managing asynchronous data
 - [Theme UI](https://theme-ui.com/) &mdash; UI components / styling
 - Quite a few other technologies
 

@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom";
 import { useDebounce } from "use-lodash-debounce";
 import { Input } from "theme-ui";
 import { encodeString } from "use-query-params";
-import SearchContext from "features/search/SearchContext";
-import useMountEffect from "hooks/useMountEffect";
-import usePrevious from "hooks/usePrevious";
+import SearchContext from "search/SearchContext";
+import useMountEffect from "common/useMountEffect";
+import usePrevious from "common/usePrevious";
 
 const SearchBar = (props: React.ComponentProps<typeof Input>) => {
   const { query, setQuery } = useContext(SearchContext);

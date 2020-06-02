@@ -2,15 +2,19 @@
 import { jsx, Flex, Box, Text, Badge, Container } from "theme-ui";
 import { alpha } from "@theme-ui/color";
 import { useParams } from "react-router-dom";
-import useMovie from "features/movies/useMovie";
-import Head from "components/Head";
-import { TmdbImage, Placeholder } from "components/TmdbImage";
-import Error from "components/Error";
-import Loading from "components/Loading";
+import { useQuery } from "react-query";
+import { getMovie } from "common/tmdbApi";
+import Head from "common/Head";
+import { TmdbImage, Placeholder } from "common/TmdbImage";
+import Error from "common/Error";
+import Loading from "common/Loading";
 
 const Movie = () => {
   const { id } = useParams();
-  const [movie, isFetching, error] = useMovie(Number.parseInt(id!));
+  const movieId = Number.parseInt(id!);
+  const { status, data: movie, error } = useQuery(["movie", movieId], () =>
+    getMovie(movieId)
+  );
   if (movie) {
     return (
       <Box sx={{ position: "relative" }}>
@@ -131,7 +135,7 @@ const Movie = () => {
       </Box>
     );
   }
-  if (isFetching) {
+  if (status === "loading") {
     return <Loading />;
   }
   return error ? <Error /> : null;

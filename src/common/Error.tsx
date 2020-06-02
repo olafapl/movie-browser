@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Flex, Text } from "theme-ui";
-import Head from "components/Head";
+import Head from "common/Head";
 
 interface ErrorProps {
   title?: string;

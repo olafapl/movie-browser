@@ -1,29 +1,36 @@
 import React from "react";
 import { ThemeProvider, Flex } from "theme-ui";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Global } from "@emotion/core";
 import { QueryParamProvider } from "use-query-params";
-import store, { persistor } from "store";
-import Movies from "features/movies/Movies";
-import Movie from "features/movies/Movie";
-import About from "features/about/About";
-import SearchResults from "features/search/SearchResults";
-import SearchProvider from "features/search/SearchProvider";
-import Nav from "components/Nav";
-import Error from "components/Error";
+import {
+  ReactQueryConfigProvider,
+  ReactQueryProviderConfig,
+} from "react-query";
+import TmdbConfigProvider from "tmdbConfig/TmdbConfigProvider";
+import Movies from "movies/Movies";
+import Movie from "movies/Movie";
+import About from "about/About";
+import SearchResults from "search/SearchResults";
+import SearchProvider from "search/SearchProvider";
+import Nav from "navigation/Nav";
+import Error from "common/Error";
 import theme from "styles/theme";
 import globalStyles from "styles/global";
 
+const queryConfig: ReactQueryProviderConfig = {
+  refetchOnWindowFocus: false,
+  staleTime: 86400000, // 1 day
+};
+
 const App = () => {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <PersistGate persistor={persistor}>
-          <Global styles={globalStyles} />
-          <Router>
-            <QueryParamProvider ReactRouterRoute={Route}>
+    <ThemeProvider theme={theme}>
+      <Global styles={globalStyles} />
+      <Router>
+        <ReactQueryConfigProvider config={queryConfig}>
+          <QueryParamProvider ReactRouterRoute={Route}>
+            <TmdbConfigProvider>
               <SearchProvider>
                 <Nav />
                 <Flex sx={{ flex: 1, flexDirection: "column" }}>
@@ -52,11 +59,11 @@ const App = () => {
                   </Switch>
                 </Flex>
               </SearchProvider>
-            </QueryParamProvider>
-          </Router>
-        </PersistGate>
-      </ThemeProvider>
-    </Provider>
+            </TmdbConfigProvider>
+          </QueryParamProvider>
+        </ReactQueryConfigProvider>
+      </Router>
+    </ThemeProvider>
   );
 };
 

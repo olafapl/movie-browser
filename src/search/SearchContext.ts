@@ -1,25 +1,25 @@
 import { createContext } from "react";
 
 interface SearchContextState {
-  movies: Tmdb.MovieListResult[] | null;
+  movies?: Tmdb.MovieListResult[];
   query: string;
   setQuery: (query: string) => void;
   page: number;
   setPage: (page: number) => void;
-  totalPages: number | null;
-  isFetching: boolean | null;
-  error: string | null;
+  totalPages?: number;
+  status: Status;
+  error?: string;
 }
 
 const initialState: SearchContextState = {
-  movies: null,
+  movies: undefined,
   query: "",
   setQuery: (query: string) => {},
   page: 1,
   setPage: (page: number) => {},
-  totalPages: null,
-  isFetching: false,
-  error: null,
+  totalPages: undefined,
+  status: "loading",
+  error: undefined,
 };
 
 const SearchContext = createContext(initialState);

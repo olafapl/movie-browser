@@ -2,9 +2,9 @@
 import React, { useContext } from "react";
 /** @jsx jsx */
 import { jsx, Text, Container } from "theme-ui";
-import MovieGrid from "features/movies/MovieGrid";
-import SearchContext from "features/search/SearchContext";
-import Head from "components/Head";
+import MovieGrid from "movies/MovieGrid";
+import SearchContext from "search/SearchContext";
+import Head from "common/Head";
 
 const SearchResults = () => {
   const {
@@ -13,7 +13,7 @@ const SearchResults = () => {
     page,
     setPage,
     totalPages,
-    isFetching,
+    status,
     error,
   } = useContext(SearchContext);
   return (
@@ -27,8 +27,8 @@ const SearchResults = () => {
         page={page}
         setPage={setPage}
         showPreviousButton={page > 1}
-        showNextButton={totalPages !== null && page < totalPages}
-        isLoading={!!isFetching}
+        showNextButton={totalPages !== undefined && page < totalPages}
+        isLoading={status === "loading"}
         error={error}
       />
     </Container>
