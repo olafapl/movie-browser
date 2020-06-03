@@ -78,7 +78,8 @@ const theme = merge(baseTheme, {
   },
   forms: {
     input: {
-      borderRadius: 1,
+      borderRadius: 2,
+      px: 3,
       borderColor: "muted",
     },
   },
