@@ -34,8 +34,10 @@ const useTmdbConfig = (): [
     const localStorageData = localStorage.getItem("tmdbConfig");
     if (localStorageData) {
       const cachedConfig: CachedConfig = JSON.parse(localStorageData);
-      if (addWeeks(new Date(cachedConfig.fetchDate!), 2) >= new Date()) {
+      if (addWeeks(new Date(cachedConfig.fetchDate), 2) >= new Date()) {
         setConfig(cachedConfig.config);
+      } else {
+        fetchConfig();
       }
     } else {
       fetchConfig();
