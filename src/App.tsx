@@ -19,8 +19,10 @@ import theme from "styles/theme";
 import globalStyles from "styles/global";
 
 const queryConfig: ReactQueryProviderConfig = {
-  refetchOnWindowFocus: false,
-  staleTime: 86400000, // 1 day
+  queries: {
+    refetchOnWindowFocus: false,
+    staleTime: 86400000, // 1 day
+  },
 };
 
 const App = () => {

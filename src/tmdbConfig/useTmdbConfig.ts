@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { QueryStatus } from "react-query";
 import addWeeks from "date-fns/esm/addWeeks";
 import { getConfig } from "common/tmdbApi";
 import useMountEffect from "common/useMountEffect";
@@ -10,7 +11,7 @@ interface CachedConfig {
 
 const useTmdbConfig = (): [
   Tmdb.Config | undefined,
-  Status,
+  QueryStatus,
   string | undefined
 ] => {
   const [error, setError] = useState<string>();
@@ -44,7 +45,7 @@ const useTmdbConfig = (): [
     }
   });
 
-  let status: Status = "loading";
+  let status: QueryStatus = "loading";
   if (config) {
     status = "success";
   } else if (error) {

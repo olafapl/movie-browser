@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useQuery } from "react-query";
+import { useQuery, QueryStatus } from "react-query";
 import { useQueryParams, StringParam, NumberParam } from "use-query-params";
 import { searchMovies } from "common/tmdbApi";
 
@@ -10,7 +10,7 @@ const useSearch = (): [
   number,
   (page: number) => void,
   number | undefined,
-  Status,
+  QueryStatus,
   string | undefined
 ] => {
   const [queryParams, setQueryParams] = useQueryParams({
