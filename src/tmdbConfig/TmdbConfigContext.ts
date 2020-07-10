@@ -1,9 +1,12 @@
 import { createContext } from "react";
+import useTmdbConfig from "tmdbConfig/useTmdbConfig";
+
+type UseTmdbConfig = ReturnType<typeof useTmdbConfig>;
 
 interface ConfigContextState {
-  config?: Tmdb.Config;
-  status: Status;
-  error?: string;
+  config: UseTmdbConfig[0];
+  status: UseTmdbConfig[1];
+  error: UseTmdbConfig[2];
 }
 
 const initialState: ConfigContextState = {

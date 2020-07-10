@@ -1,22 +1,25 @@
 import { createContext } from "react";
+import useSearch from "search/useSearch";
+
+type UseSearch = ReturnType<typeof useSearch>;
 
 interface SearchContextState {
-  movies?: Tmdb.MovieListResult[];
-  query: string;
-  setQuery: (query: string) => void;
-  page: number;
-  setPage: (page: number) => void;
-  totalPages?: number;
-  status: Status;
-  error?: string;
+  movies: UseSearch[0];
+  query: UseSearch[1];
+  setQuery: UseSearch[2];
+  page: UseSearch[3];
+  setPage: UseSearch[4];
+  totalPages: UseSearch[5];
+  status: UseSearch[6];
+  error: UseSearch[7];
 }
 
 const initialState: SearchContextState = {
   movies: undefined,
   query: "",
-  setQuery: (query: string) => {},
+  setQuery: () => {},
   page: 1,
-  setPage: (page: number) => {},
+  setPage: () => {},
   totalPages: undefined,
   status: "loading",
   error: undefined,
