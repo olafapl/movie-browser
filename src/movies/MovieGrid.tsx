@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { TmdbImage, Placeholder } from "common/TmdbImage";
 import Loading from "common/Loading";
 import Error from "common/Error";
+import { MovieListResult } from "movies/api";
 
 interface MovieGridProps {
   page: number;
@@ -12,7 +13,7 @@ interface MovieGridProps {
   showPreviousButton: boolean;
   showNextButton: boolean;
   isLoading: boolean;
-  movies?: Tmdb.MovieListResult[];
+  movies?: MovieListResult[];
   error?: string;
 }
 

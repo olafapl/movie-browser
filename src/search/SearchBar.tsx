@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDebounce } from "use-lodash-debounce";
 import { Input } from "theme-ui";
 import { encodeString } from "use-query-params";
-import SearchContext from "search/SearchContext";
+import useSearch from "search/useSearch";
 import useMountEffect from "common/useMountEffect";
 import usePrevious from "common/usePrevious";
 
 const SearchBar = (props: React.ComponentProps<typeof Input>) => {
-  const { query, setQuery } = useContext(SearchContext);
+  const { query, setQuery } = useSearch();
   const [value, setValue] = useState(query);
   const debouncedValue = useDebounce(value, 500);
   const previousDebouncedValue = usePrevious(debouncedValue);

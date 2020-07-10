@@ -3,7 +3,7 @@ import { jsx, Flex, Box, Text, Badge, Container } from "theme-ui";
 import { alpha } from "@theme-ui/color";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getMovie } from "common/tmdbApi";
+import { fetchMovie } from "movies/api";
 import Head from "common/Head";
 import { TmdbImage, Placeholder } from "common/TmdbImage";
 import Error from "common/Error";
@@ -13,7 +13,7 @@ const Movie = () => {
   const { id } = useParams();
   const movieId = Number.parseInt(id!);
   const { status, data: movie, error } = useQuery(["movie", movieId], () =>
-    getMovie(movieId)
+    fetchMovie(movieId)
   );
   if (movie) {
     return (

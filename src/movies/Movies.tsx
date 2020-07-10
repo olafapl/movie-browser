@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { jsx, Text, Container } from "theme-ui";
 import { useQuery } from "react-query";
 import { useQueryParam, NumberParam } from "use-query-params";
-import { getMovies } from "common/tmdbApi";
+import { fetchMovies } from "movies/api";
 import MovieGrid from "movies/MovieGrid";
 import Head from "common/Head";
 
@@ -22,7 +22,7 @@ const Movies = ({ title, endpoint }: MoviesProps) => {
     [setPageParam]
   );
   const { status, data, error } = useQuery(["movies", endpoint, page], () =>
-    getMovies(endpoint, page)
+    fetchMovies(endpoint, page)
   );
 
   return (

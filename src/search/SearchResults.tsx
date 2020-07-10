@@ -1,21 +1,21 @@
 // eslint-disable-next-line
-import React, { useContext } from "react";
+import React from "react";
 /** @jsx jsx */
 import { jsx, Text, Container } from "theme-ui";
 import MovieGrid from "movies/MovieGrid";
-import SearchContext from "search/SearchContext";
+import useSearch from "search/useSearch";
 import Head from "common/Head";
 
 const SearchResults = () => {
   const {
-    movies,
+    results,
     query,
     page,
     setPage,
     totalPages,
     status,
     error,
-  } = useContext(SearchContext);
+  } = useSearch();
   return (
     <Container sx={{ flex: 1 }}>
       <Head title={`Search: ${query}`} />
@@ -23,7 +23,7 @@ const SearchResults = () => {
         Results for "{query}"
       </Text>
       <MovieGrid
-        movies={movies}
+        movies={results}
         page={page}
         setPage={setPage}
         showPreviousButton={page > 1}

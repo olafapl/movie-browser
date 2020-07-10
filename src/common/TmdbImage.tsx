@@ -1,14 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 /** @jsx jsx */
 import { jsx, Box, Image } from "theme-ui";
 import { keyframes } from "@emotion/core";
 import { darken } from "@theme-ui/color";
 import AspectRatio from "common/AspectRatio";
-import { getImageUrls } from "common/tmdbApi";
-import TmdbConfigContext from "tmdbConfig/TmdbConfigContext";
+import useTmdbConfig from "tmdbConfig/useTmdbConfig";
+import { Config } from "tmdbConfig/api";
+
+export type ImageType = "poster" | "backdrop";
+
+const buildImageUrls = (
+  path: string,
+  tmdbConfig: Config,
+  imageType: ImageType
+) => {
+  const imageSizes =
+    imageType === "poster"
+      ? tmdbConfig.images.poster_sizes
+      : tmdbConfig.images.backdrop_sizes;
+  const imageUrls: { [key: string]: string } = {};
+  imageSizes.forEach(
+    (size) =>
+      (imageUrls[size] = `${tmdbConfig.images.secure_base_url}${size}${path}`)
+  );
+  return imageUrls;
+};
 
 interface TmdbImageProps {
-  imageType: Tmdb.ImageType;
+  imageType: ImageType;
   path: string;
   className?: string;
   alt?: string;
@@ -23,10 +42,10 @@ export const TmdbImage = ({
   sizes,
 }: TmdbImageProps) => {
   const [isLoadingImage, setIsLoadingImage] = useState(true);
-  const { config, status } = useContext(TmdbConfigContext);
+  const { config, status } = useTmdbConfig();
   const widthRegex = /w\d+/;
   if (config) {
-    const imageUrls = getImageUrls(path, config, imageType);
+    const imageUrls = buildImageUrls(path, config, imageType);
     const imageSizes = Object.keys(imageUrls);
     return (
       <React.Fragment>
@@ -55,7 +74,7 @@ export const TmdbImage = ({
 };
 
 interface PlaceholderProps {
-  imageType: Tmdb.ImageType;
+  imageType: ImageType;
   isLoading?: boolean;
 }
 
