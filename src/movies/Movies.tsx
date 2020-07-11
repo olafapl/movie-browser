@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useCallback } from "react";
 /** @jsx jsx */
 import { jsx, Text, Container } from "theme-ui";
@@ -5,7 +6,7 @@ import { useQuery } from "react-query";
 import { useQueryParam, NumberParam } from "use-query-params";
 import { fetchMovies } from "movies/api";
 import MovieGrid from "movies/MovieGrid";
-import Head from "common/Head";
+import { Helmet } from "react-helmet";
 
 interface MoviesProps {
   title: string;
@@ -27,7 +28,9 @@ const Movies = ({ title, endpoint }: MoviesProps) => {
 
   return (
     <Container sx={{ flex: 1 }}>
-      <Head title={title} />
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <Text as="h1" variant="heading" mb="4">
         {title}
       </Text>

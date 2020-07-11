@@ -1,10 +1,8 @@
-// eslint-disable-next-line
-import React from "react";
 /** @jsx jsx */
 import { jsx, Text, Container } from "theme-ui";
+import { Helmet } from "react-helmet";
 import MovieGrid from "movies/MovieGrid";
 import useSearch from "search/useSearch";
-import Head from "common/Head";
 
 const SearchResults = () => {
   const {
@@ -18,7 +16,9 @@ const SearchResults = () => {
   } = useSearch();
   return (
     <Container sx={{ flex: 1 }}>
-      <Head title={`Search: ${query}`} />
+      <Helmet>
+        <title>{`Search: ${query}`}</title>
+      </Helmet>
       <Text as="h1" variant="heading" mb="4">
         Results for "{query}"
       </Text>

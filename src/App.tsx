@@ -1,5 +1,6 @@
-import React from "react";
-import { ThemeProvider, Flex } from "theme-ui";
+/** @jsx jsx */
+import { jsx, ThemeProvider, Flex } from "theme-ui";
+import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Global } from "@emotion/core";
 import { QueryParamProvider } from "use-query-params";
@@ -28,6 +29,9 @@ const queryConfig: ReactQueryProviderConfig = {
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
+      <Helmet titleTemplate="%s — Movie Browser" defaultTitle="Movie Browser">
+        <meta name="theme-color" content="#000000" />
+      </Helmet>
       <Global styles={globalStyles} />
       <Router>
         <ReactQueryConfigProvider config={queryConfig}>

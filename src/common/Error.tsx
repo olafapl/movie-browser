@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, Flex, Text } from "theme-ui";
-import Head from "common/Head";
+import { Helmet } from "react-helmet";
 
 interface ErrorProps {
   title?: string;
@@ -20,7 +20,9 @@ const Error = ({
         flex: "1",
       }}
     >
-      <Head title={title} />
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <Text as="h1" variant="heading" mb="4">
         {title}
       </Text>
