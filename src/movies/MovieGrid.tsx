@@ -6,13 +6,14 @@ import { TmdbImage, Placeholder } from "common/TmdbImage";
 import Loading from "common/Loading";
 import Error from "common/Error";
 import { MovieListResult } from "movies/api";
+import { QueryStatus } from "react-query";
 
 interface MovieGridProps {
   page: number;
   setPage: (page: number) => void;
   showPreviousButton: boolean;
   showNextButton: boolean;
-  isLoading: boolean;
+  status: QueryStatus;
   movies?: MovieListResult[];
   error?: string;
 }
@@ -23,10 +24,10 @@ const MovieGrid = ({
   setPage,
   showPreviousButton,
   showNextButton,
-  isLoading,
+  status,
   error,
 }: MovieGridProps) => {
-  if (movies?.length) {
+  if (movies) {
     return (
       <React.Fragment>
         <Grid columns={[2, 4, 5]} gap="3" sx={{ alignItems: "center" }}>
@@ -96,7 +97,7 @@ const MovieGrid = ({
               <Button
                 mx="2"
                 variant="ghost"
-                disabled={isLoading}
+                disabled={status === "loading"}
                 onClick={() => setPage(page - 1)}
               >
                 Previous
@@ -106,7 +107,7 @@ const MovieGrid = ({
               <Button
                 mx="3"
                 variant="ghost"
-                disabled={isLoading}
+                disabled={status === "loading"}
                 onClick={() => setPage(page + 1)}
               >
                 Next
@@ -117,10 +118,16 @@ const MovieGrid = ({
       </React.Fragment>
     );
   }
-  if (isLoading) {
+
+  if (status === "loading") {
     return <Loading />;
   }
-  return error ? <Error /> : null;
+
+  if (status === "error") {
+    return <Error />;
+  }
+
+  return null;
 };
 
 export default MovieGrid;

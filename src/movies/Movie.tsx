@@ -12,14 +12,15 @@ import Loading from "common/Loading";
 const Movie = () => {
   const { id } = useParams();
   const movieId = Number.parseInt(id!);
-  const { status, data: movie, error } = useQuery(["movie", movieId], () =>
+  const { status, data } = useQuery(["movie", movieId], () =>
     fetchMovie(movieId)
   );
-  if (movie) {
+
+  if (status === "success" && data) {
     return (
       <Box sx={{ position: "relative" }}>
         <Helmet>
-          <title>{movie.title}</title>
+          <title>{data.title}</title>
         </Helmet>
         <Container>
           <Box
@@ -46,9 +47,9 @@ const Movie = () => {
                 borderRadius: 1,
               }}
             >
-              {movie.poster_path ? (
+              {data.poster_path ? (
                 <TmdbImage
-                  path={movie.poster_path}
+                  path={data.poster_path}
                   imageType="poster"
                   sizes="33vw"
                 />
@@ -58,26 +59,26 @@ const Movie = () => {
             </Flex>
             <Flex sx={{ gridArea: "title", flexDirection: "column" }}>
               <Text as="h1" variant="heading">
-                {movie.title}
+                {data.title}
               </Text>
-              {movie.tagline && (
-                <Text sx={{ fontStyle: "italic", mt: 3 }}>{movie.tagline}</Text>
+              {data.tagline && (
+                <Text sx={{ fontStyle: "italic", mt: 3 }}>{data.tagline}</Text>
               )}
             </Flex>
             <Box sx={{ gridArea: "meta", display: "grid", gap: 2 }}>
               <Flex sx={{ flexDirection: "row" }}>
                 <Text as="time" title="Release year">
-                  {new Date(movie.release_date).getFullYear()}
+                  {new Date(data.release_date).getFullYear()}
                 </Text>
-                {movie.runtime > 0 && (
+                {data.runtime > 0 && (
                   <Text title="Runtime" ml="3">{`${Math.floor(
-                    movie.runtime / 60
-                  )} h ${movie.runtime % 60} min`}</Text>
+                    data.runtime / 60
+                  )} h ${data.runtime % 60} min`}</Text>
                 )}
               </Flex>
-              {movie.genres.length > 0 && (
+              {data.genres.length > 0 && (
                 <Flex sx={{ alignItems: "center", flexWrap: "wrap", m: -1 }}>
-                  {movie.genres.map((genre) => (
+                  {data.genres.map((genre) => (
                     <Badge key={genre.id} m="1" variant="plain">
                       {genre.name}
                     </Badge>
@@ -85,10 +86,10 @@ const Movie = () => {
                 </Flex>
               )}
             </Box>
-            <Text sx={{ gridArea: "overview" }}>{movie.overview}</Text>
-            {/*             {movie.imdb_id && (
+            <Text sx={{ gridArea: "overview" }}>{data.overview}</Text>
+            {/*             {data.imdb_id && (
                 <Link
-                  href={`https://www.imdb.com/title/${movie.imdb_id}`}
+                  href={`https://www.imdb.com/title/${data.imdb_id}`}
                   sx={{
                     gridColumn: "span 2",
                     justifySelf: "center"
@@ -99,7 +100,7 @@ const Movie = () => {
               )} */}
           </Box>
         </Container>
-        {movie.backdrop_path && (
+        {data.backdrop_path && (
           <Box
             sx={{
               position: "absolute",
@@ -122,7 +123,7 @@ const Movie = () => {
             }}
           >
             <TmdbImage
-              path={movie.backdrop_path}
+              path={data.backdrop_path}
               imageType="backdrop"
               sizes="100vw"
               sx={{
@@ -137,10 +138,16 @@ const Movie = () => {
       </Box>
     );
   }
+
   if (status === "loading") {
     return <Loading />;
   }
-  return error ? <Error /> : null;
+
+  if (status === "error") {
+    return <Error />;
+  }
+
+  return null;
 };
 
 export default Movie;

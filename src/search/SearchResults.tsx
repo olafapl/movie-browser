@@ -28,7 +28,7 @@ const SearchResults = () => {
         setPage={setPage}
         showPreviousButton={page > 1}
         showNextButton={totalPages !== undefined && page < totalPages}
-        isLoading={status === "loading"}
+        status={status}
         error={error}
       />
     </Container>

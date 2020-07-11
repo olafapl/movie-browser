@@ -42,7 +42,7 @@ const Movies = ({ title, endpoint }: MoviesProps) => {
         showNextButton={
           data?.total_pages !== undefined && page < data.total_pages
         }
-        isLoading={status === "loading"}
+        status={status}
         error={error?.message}
       />
     </Container>
