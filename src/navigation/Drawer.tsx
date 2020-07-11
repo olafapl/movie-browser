@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 /** @jsx jsx */
 import { jsx, Flex, Close, Text } from "theme-ui";
 import { motion, Variants, Transition } from "framer-motion";
+import useOnClickOutside from "common/useOnClickOutside";
 
 const spring: Transition = {
   type: "spring",
@@ -27,16 +28,12 @@ interface DrawerProps {
   setIsOpen: (isOpen: boolean) => void;
   children: React.ReactNode;
   title?: string;
-  drawerRef?: React.RefObject<HTMLDivElement>;
 }
 
-const Drawer = ({
-  isOpen,
-  setIsOpen,
-  children,
-  title,
-  drawerRef,
-}: DrawerProps) => {
+const Drawer = ({ isOpen, setIsOpen, children, title }: DrawerProps) => {
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(() => setIsOpen(false), [drawerRef]);
+
   return (
     <React.Fragment>
       <motion.div

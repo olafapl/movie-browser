@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 /** @jsx jsx */
 import { jsx, Flex, MenuButton, Container, Box, NavLink, Link } from "theme-ui";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "search/SearchBar";
-import useOnClickOutside from "common/useOnClickOutside";
 import Drawer from "navigation/Drawer";
 
 const routes = [
@@ -14,8 +13,7 @@ const routes = [
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  const drawerRef = useRef<HTMLDivElement>(null);
-  useOnClickOutside(() => setDrawerIsOpen(false), [drawerRef]);
+
   return (
     <React.Fragment>
       <Box as="nav">
@@ -46,12 +44,7 @@ const Nav = () => {
           </Flex>
         </Container>
       </Box>
-      <Drawer
-        title="Menu"
-        drawerRef={drawerRef}
-        isOpen={drawerIsOpen}
-        setIsOpen={setDrawerIsOpen}
-      >
+      <Drawer title="Menu" isOpen={drawerIsOpen} setIsOpen={setDrawerIsOpen}>
         <Flex sx={{ flexDirection: "column", flex: "1", py: 3 }}>
           {routes.map(({ title, path }) => (
             <NavLink
