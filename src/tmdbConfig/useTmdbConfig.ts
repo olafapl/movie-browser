@@ -1,10 +1,7 @@
 import { useContext } from "react";
-import {
-  TmdbConfigContext,
-  TmdbConfigContextState,
-} from "tmdbConfig/TmdbConfigProvider";
+import { TmdbConfigContext } from "tmdbConfig/TmdbConfigProvider";
 
-const useTmdbConfig = (): TmdbConfigContextState => {
+const useTmdbConfig = () => {
   const state = useContext(TmdbConfigContext);
   return state;
 };
