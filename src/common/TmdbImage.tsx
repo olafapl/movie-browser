@@ -5,7 +5,7 @@ import { keyframes } from "@emotion/core";
 import { darken } from "@theme-ui/color";
 import AspectRatio from "common/AspectRatio";
 import useTmdbConfig from "tmdbConfig/useTmdbConfig";
-import { Config } from "tmdbConfig/api";
+import { Config } from "common/api";
 
 export type ImageType = "poster" | "backdrop";
 
@@ -34,6 +34,8 @@ interface TmdbImageProps {
   sizes?: string;
 }
 
+const widthRegex = /w\d+/;
+
 export const TmdbImage = ({
   path,
   imageType,
@@ -41,9 +43,8 @@ export const TmdbImage = ({
   alt,
   sizes,
 }: TmdbImageProps) => {
-  const [isLoadingImage, setIsLoadingImage] = useState(true);
+  const [imageIsLoading, setImageIsLoading] = useState(true);
   const { config, status } = useTmdbConfig();
-  const widthRegex = /w\d+/;
   if (config) {
     const imageUrls = buildImageUrls(path, config, imageType);
     const imageSizes = Object.keys(imageUrls);
@@ -58,15 +59,15 @@ export const TmdbImage = ({
           sizes={sizes}
           className={className}
           alt={alt}
-          onLoad={() => setIsLoadingImage(false)}
+          onLoad={() => setImageIsLoading(false)}
           sx={{
-            visibility: isLoadingImage ? "hidden" : "visible",
-            opacity: isLoadingImage ? 0 : 1,
-            height: isLoadingImage ? 0 : "auto",
-            width: isLoadingImage ? 0 : "auto",
+            visibility: imageIsLoading ? "hidden" : "visible",
+            opacity: imageIsLoading ? 0 : 1,
+            height: imageIsLoading ? 0 : "auto",
+            width: imageIsLoading ? 0 : "auto",
           }}
         />
-        {isLoadingImage && <Placeholder imageType={imageType} isLoading />}
+        {imageIsLoading && <Placeholder imageType={imageType} isLoading />}
       </React.Fragment>
     );
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { QueryStatus, useQuery } from "react-query";
 import { addWeeks } from "date-fns";
-import { fetchConfig, Config } from "tmdbConfig/api";
+import { fetchEndpoint, Config } from "common/api";
 import useMountEffect from "common/useMountEffect";
 
 export interface TmdbConfigContextState {
@@ -27,7 +27,7 @@ const ConfigProvider = ({ children }: ConfigProviderProps) => {
   const [queryEnabled, setQueryEnabled] = useState(false);
   const { status: queryStatus, data, error } = useQuery(
     "tmdbConfig",
-    fetchConfig,
+    () => fetchEndpoint<Config>("configuration"),
     {
       enabled: queryEnabled,
     }

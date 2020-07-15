@@ -4,16 +4,16 @@ import { Helmet } from "react-helmet";
 import { alpha } from "@theme-ui/color";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { fetchMovie } from "movies/api";
 import { TmdbImage, Placeholder } from "common/TmdbImage";
 import Error from "common/Error";
 import Loading from "common/Loading";
+import { fetchEndpoint, Movie } from "common/api";
 
-const Movie = () => {
+const MovieOverview = () => {
   const { id } = useParams();
   const movieId = Number.parseInt(id!);
   const { status, data } = useQuery(["movie", movieId], () =>
-    fetchMovie(movieId)
+    fetchEndpoint<Movie>(`movie/${movieId}`)
   );
 
   if (status === "success" && data) {
@@ -150,4 +150,4 @@ const Movie = () => {
   return null;
 };
 
-export default Movie;
+export default MovieOverview;

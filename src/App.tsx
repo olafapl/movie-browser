@@ -10,7 +10,7 @@ import {
 } from "react-query";
 import TmdbConfigProvider from "tmdbConfig/TmdbConfigProvider";
 import Movies from "movies/Movies";
-import Movie from "movies/Movie";
+import MovieOverview from "movies/MovieOverview";
 import About from "about/About";
 import SearchResults from "search/SearchResults";
 import SearchProvider from "search/SearchProvider";
@@ -42,7 +42,7 @@ const App = () => {
                 <Flex sx={{ flex: 1, flexDirection: "column" }}>
                   <Switch>
                     <Route exact path="/movie/:id">
-                      <Movie />
+                      <MovieOverview />
                     </Route>
                     <Route exact path="/movies/popular">
                       <Movies title="Popular" endpoint="movie/popular" />
