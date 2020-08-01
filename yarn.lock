@@ -10127,10 +10127,10 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
-react-query@^2.4.14:
-  version "2.4.14"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.4.14.tgz#26c5cb663cd5ae7865204e31f8e21554ba53c69d"
-  integrity sha512-yxLMKZ6ZOvOg9oCfzUxcA0hMivWHrpvZxhySTIn7ED5tUkiewy5ogNpFW3sHje33INO3AKgFdB341mMjJ+Gu4w==
+react-query@^2.5.10:
+  version "2.5.10"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.5.10.tgz#f294b15b7003d8e0597078764ac2907eec47cbb7"
+  integrity sha512-Ehe2G5+DxpEkoMJ5lxZjewfhnaA8j/GuXRUmLyJfLRQymgn0+jRjyr67IKbET2fUNH1KJ3Nq6JEA/aZy9PR2RQ==
   dependencies:
     ts-toolbelt "^6.9.4"
 
