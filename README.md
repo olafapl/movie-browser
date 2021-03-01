@@ -6,6 +6,7 @@ A React application for browsing movies.
 
 ![Desktop](screenshots/desktop.png)
 ![Mobile](screenshots/mobile.png) ![Mobile menu](screenshots/mobile-menu.png)
+![Mobile search](screenshots/mobile-search.png) ![Mobile movie](screenshots/mobile-movie.png)
 
 ## Getting Started
 
